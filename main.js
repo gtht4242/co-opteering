@@ -1,1 +1,1 @@
-console.log("Hello world!")
+var game = new Phaser.Game('99', '99')
