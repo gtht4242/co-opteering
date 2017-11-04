@@ -6,15 +6,19 @@ function createMap() {
     wallCyanHorizontal = 'wall_cyan_horizontal';
     wallCyanVertical = 'wall_cyan_vertical';
     wallCyanSquare = 'wall_cyan_square';
+    particleCyanSquare = 'particle_cyan_square';
     wallGreenHorizontal = 'wall_green_horizontal';
     wallGreenVertical = 'wall_green_vertical';
     wallGreenSquare = 'wall_green_square';
+    particleGreenSquare = 'particle_green_square';
     wallRedHorizontal = 'wall_red_horizontal';
     wallRedVertical = 'wall_red_vertical';
     wallRedSquare = 'wall_red_square';
+    particleRedSquare = 'particle_red_square';
     wallYellowHorizontal = 'wall_yellow_horizontal';
     wallYellowVertical = 'wall_yellow_vertical';
     wallYellowSquare = 'wall_yellow_square';
+    particleYellowSquare = 'particle_yellow_square';
     mapData = [
         {
             colour: 'cyan',

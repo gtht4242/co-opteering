@@ -6,19 +6,23 @@ function preload() {
     game.scale.pageAlignHorizontally = true;
     game.scale.pageAlignVertically = true;
     // Load images
-    game.load.image('player_black', 'images/square_black.png');
-    game.load.image('wall_cyan_horizontal', 'images/rect_cyan_hori.png');
-    game.load.image('wall_cyan_vertical', 'images/rect_cyan_vert.png');
-    game.load.image('wall_cyan_square', 'images/square_cyan.png');
-    game.load.image('wall_green_horizontal', 'images/rect_green_hori.png');
-    game.load.image('wall_green_vertical', 'images/rect_green_vert.png');
-    game.load.image('wall_green_square', 'images/square_green.png');
-    game.load.image('wall_red_horizontal', 'images/rect_red_hori.png');
-    game.load.image('wall_red_vertical', 'images/rect_red_vert.png');
-    game.load.image('wall_red_square', 'images/square_red.png');
-    game.load.image('wall_yellow_horizontal', 'images/rect_yellow_hori.png');
-    game.load.image('wall_yellow_vertical', 'images/rect_yellow_vert.png');
-    game.load.image('wall_yellow_square', 'images/square_yellow.png');
+    game.load.image('player_black', 'images/small_square_black.png');
+    game.load.image(wallCyanHorizontal, 'images/rect_cyan_hori.png');
+    game.load.image(wallCyanVertical, 'images/rect_cyan_vert.png');
+    game.load.image(wallCyanSquare, 'images/square_cyan.png');
+    game.load.image(particleCyanSquare, 'images/small_square_cyan.png');
+    game.load.image(wallGreenHorizontal, 'images/rect_green_hori.png');
+    game.load.image(wallGreenVertical, 'images/rect_green_vert.png');
+    game.load.image(wallGreenSquare, 'images/square_green.png');
+    game.load.image(particleGreenSquare, 'images/small_square_green.png');
+    game.load.image(wallRedHorizontal, 'images/rect_red_hori.png');
+    game.load.image(wallRedVertical, 'images/rect_red_vert.png');
+    game.load.image(wallRedSquare, 'images/square_red.png');
+    game.load.image(particleRedSquare, 'images/small_square_red.png');
+    game.load.image(wallYellowHorizontal, 'images/rect_yellow_hori.png');
+    game.load.image(wallYellowVertical, 'images/rect_yellow_vert.png');
+    game.load.image(wallYellowSquare, 'images/square_yellow.png');
+    game.load.image(particleYellowSquare, 'images/small_square_yellow.png');
 }
 function create() {
     // Initialise core systems
@@ -30,7 +34,7 @@ function create() {
     loadRoom();
     // Create wall emitter
     wallEmitter = game.add.emitter(0, 0, 10);
-    wallEmitter.makeParticles('player_black');
+    wallEmitter.makeParticles(colorWallParticles());
     wallEmitter.gravity = 0;
     wallEmitter.setAlpha(0.4, 0.6);
     // Create player sprite and variables
@@ -67,6 +71,17 @@ function update() {
     else if (cursors.down.isDown)
         player.body.velocity.y += 15;
 }
+function colorWallParticles() {
+    // Determines key to use for wall particles
+    if (room.colour === 'cyan')
+        return particleCyanSquare;
+    else if (room.colour === 'green')
+        return particleGreenSquare;
+    else if (room.colour === 'red')
+        return particleRedSquare;
+    else if (room.colour === 'yellow')
+        return particleYellowSquare;
+}
 function wallParticles(player) {
     // Emit wall particles at current location
     wallEmitter.x = player.body.x;
@@ -98,4 +113,5 @@ function roomChange() {
         player.y -= game.world.height;
     }
     loadRoom();
+    wallEmitter.forEach(function(child) {child.loadTexture(colorWallParticles());});
 }
