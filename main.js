@@ -27,7 +27,16 @@ function preload() {
 function create() {
     // Initialise core systems
     game.physics.startSystem(Phaser.Physics.ARCADE);
-    cursors = game.input.keyboard.createCursorKeys();
+    keys = game.input.keyboard.addKeys({
+        'up': Phaser.KeyCode.UP,
+        'down': Phaser.KeyCode.DOWN,
+        'left': Phaser.KeyCode.LEFT,
+        'right': Phaser.KeyCode.RIGHT,
+        'one': Phaser.KeyCode.ONE,
+        'two': Phaser.KeyCode.TWO,
+        'three': Phaser.KeyCode.THREE,
+        'four': Phaser.KeyCode.FOUR
+    });
     // Create walls group and load starting room
     walls = game.add.group();
     walls.enableBody = true;
@@ -38,7 +47,8 @@ function create() {
     wallEmitter.gravity = 0;
     wallEmitter.setAlpha(0.4, 0.6);
     // Create player sprite and variables
-    player = game.add.sprite(game.world.centerX, game.world.centerY, 'player_black');
+    player = game.add.sprite(game.world.centerX, game.world.centerY, colorWallParticles());
+    playerColour = room.colour;
     game.physics.arcade.enable(player);
     player.anchor.x = 0.5;
     player.anchor.y = 0.5;
@@ -62,14 +72,28 @@ function update() {
     else if (player.body.velocity.y < 0)
         player.body.velocity.y += 5;
     // Move player
-    if (cursors.right.isDown)
+    if (keys.right.isDown)
         player.body.velocity.x += 15;
-    else if (cursors.left.isDown)
+    else if (keys.left.isDown)
         player.body.velocity.x -= 15;
-    if (cursors.up.isDown)
+    if (keys.up.isDown)
         player.body.velocity.y -= 15;
-    else if (cursors.down.isDown)
+    else if (keys.down.isDown)
         player.body.velocity.y += 15;
+    // Change player colour
+    if (keys.one.isDown) {
+        player.loadTexture(particleCyanSquare);
+        playerColour = 'cyan';
+    } else if (keys.two.isDown) {
+        player.loadTexture(particleGreenSquare);
+        playerColour = 'green';
+    } else if (keys.three.isDown) {
+        player.loadTexture(particleRedSquare);
+        playerColour = 'red';
+    } else if (keys.four.isDown) {
+        player.loadTexture(particleYellowSquare);
+        playerColour = 'yellow';
+    }
 }
 function colorWallParticles() {
     // Determines key to use for wall particles
