@@ -48,7 +48,7 @@ function create() {
     wallEmitter.setAlpha(0.4, 0.6);
     // Create player sprite and variables
     player = game.add.sprite(game.world.centerX, game.world.centerY, colorWallParticles());
-    playerColour = room.colour;
+    playerColor = room.color;
     game.physics.arcade.enable(player);
     player.anchor.x = 0.5;
     player.anchor.y = 0.5;
@@ -80,30 +80,30 @@ function update() {
         player.body.velocity.y -= 15;
     else if (keys.down.isDown)
         player.body.velocity.y += 15;
-    // Change player colour
+    // Change player color
     if (keys.one.isDown) {
         player.loadTexture(particleCyanSquare);
-        playerColour = 'cyan';
+        playerColor = 'cyan';
     } else if (keys.two.isDown) {
         player.loadTexture(particleGreenSquare);
-        playerColour = 'green';
+        playerColor = 'green';
     } else if (keys.three.isDown) {
         player.loadTexture(particleRedSquare);
-        playerColour = 'red';
+        playerColor = 'red';
     } else if (keys.four.isDown) {
         player.loadTexture(particleYellowSquare);
-        playerColour = 'yellow';
+        playerColor = 'yellow';
     }
 }
 function colorWallParticles() {
     // Determines key to use for wall particles
-    if (room.colour === 'cyan')
+    if (room.color === 'cyan')
         return particleCyanSquare;
-    else if (room.colour === 'green')
+    else if (room.color === 'green')
         return particleGreenSquare;
-    else if (room.colour === 'red')
+    else if (room.color === 'red')
         return particleRedSquare;
-    else if (room.colour === 'yellow')
+    else if (room.color === 'yellow')
         return particleYellowSquare;
 }
 function wallParticles(player) {
