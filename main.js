@@ -46,53 +46,55 @@ function create() {
     wallEmitter.makeParticles(colorWallParticles());
     wallEmitter.gravity = 0;
     wallEmitter.setAlpha(0.4, 0.6);
-    // Create player sprite and variables
-    player = game.add.sprite(game.world.centerX, game.world.centerY, colorWallParticles());
-    playerColor = room.color;
-    game.physics.arcade.enable(player);
-    player.anchor.x = 0.5;
-    player.anchor.y = 0.5;
-    player.body.maxVelocity.x = 400;
-    player.body.maxVelocity.y = 400;
-    player.checkWorldBounds = true;
-    player.events.onOutOfBounds.add(roomChange);
+    // Create player object and set variables
+    player = {
+        sprite: game.add.sprite(game.world.centerX, game.world.centerY, colorWallParticles()),
+        color: room.color
+    };
+    game.physics.arcade.enable(player.sprite);
+    player.sprite.anchor.x = 0.5;
+    player.sprite.anchor.y = 0.5;
+    player.sprite.body.maxVelocity.x = 400;
+    player.sprite.body.maxVelocity.y = 400;
+    player.sprite.checkWorldBounds = true;
+    player.sprite.events.onOutOfBounds.add(roomChange);
 }
 function update() {
     // Check for wall collision
-    var hitWall = game.physics.arcade.collide(player, walls);
+    var hitWall = game.physics.arcade.collide(player.sprite, walls);
     if (hitWall)
-        wallParticles(player);
+        wallParticles(player.sprite);
     // Slow down player naturally
-    if (player.body.velocity.x > 0)
-        player.body.velocity.x -= 5;
-    else if (player.body.velocity.x < 0)
-        player.body.velocity.x += 5;
-    if (player.body.velocity.y > 0)
-        player.body.velocity.y -= 5;
-    else if (player.body.velocity.y < 0)
-        player.body.velocity.y += 5;
+    if (player.sprite.body.velocity.x > 0)
+        player.sprite.body.velocity.x -= 5;
+    else if (player.sprite.body.velocity.x < 0)
+        player.sprite.body.velocity.x += 5;
+    if (player.sprite.body.velocity.y > 0)
+        player.sprite.body.velocity.y -= 5;
+    else if (player.sprite.body.velocity.y < 0)
+        player.sprite.body.velocity.y += 5;
     // Move player
     if (keys.right.isDown)
-        player.body.velocity.x += 15;
+        player.sprite.body.velocity.x += 15;
     else if (keys.left.isDown)
-        player.body.velocity.x -= 15;
+        player.sprite.body.velocity.x -= 15;
     if (keys.up.isDown)
-        player.body.velocity.y -= 15;
+        player.sprite.body.velocity.y -= 15;
     else if (keys.down.isDown)
-        player.body.velocity.y += 15;
+        player.sprite.body.velocity.y += 15;
     // Change player color
     if (keys.one.isDown) {
-        player.loadTexture(particleCyanSquare);
-        playerColor = 'cyan';
+        player.sprite.loadTexture(particleCyanSquare);
+        player.color = 'cyan';
     } else if (keys.two.isDown) {
-        player.loadTexture(particleGreenSquare);
-        playerColor = 'green';
+        player.sprite.loadTexture(particleGreenSquare);
+        player.color = 'green';
     } else if (keys.three.isDown) {
-        player.loadTexture(particleRedSquare);
-        playerColor = 'red';
+        player.sprite.loadTexture(particleRedSquare);
+        player.color = 'red';
     } else if (keys.four.isDown) {
-        player.loadTexture(particleYellowSquare);
-        playerColor = 'yellow';
+        player.sprite.loadTexture(particleYellowSquare);
+        player.color = 'yellow';
     }
 }
 function colorWallParticles() {
@@ -123,18 +125,18 @@ function loadRoom() {
 }
 function roomChange() {
     // Change roomIndex then call loadRoom
-    if (player.body.x < 0) {
+    if (player.sprite.body.x < 0) {
         roomIndex -= 1;
-        player.x += game.world.width;
-    } else if (player.body.x > game.world.width) {
+        player.sprite.x += game.world.width;
+    } else if (player.sprite.body.x > game.world.width) {
         roomIndex += 1;
-        player.x -= game.world.width;
-    } else if (player.body.y < 0) {
+        player.sprite.x -= game.world.width;
+    } else if (player.sprite.body.y < 0) {
         roomIndex -= mapWidth;
-        player.y += game.world.height;
-    } else if (player.body.y > game.world.height) {
+        player.sprite.y += game.world.height;
+    } else if (player.sprite.body.y > game.world.height) {
         roomIndex += mapWidth;
-        player.y -= game.world.height;
+        player.sprite.y -= game.world.height;
     }
     loadRoom();
     wallEmitter.forEach(function(child) {child.loadTexture(colorWallParticles());});
