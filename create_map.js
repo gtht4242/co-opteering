@@ -2,7 +2,7 @@ function createMap() {
     // Initialise mapData and other variables
     const WALLTHICKNESS = 100;
     mapWidth = 5;
-    roomIndex = 0;
+    particleBlackSquare = 'particle_black_square';
     wallCyanHorizontal = 'wall_cyan_horizontal';
     wallCyanVertical = 'wall_cyan_vertical';
     wallCyanSquare = 'wall_cyan_square';

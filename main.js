@@ -6,7 +6,7 @@ function preload() {
     game.scale.pageAlignHorizontally = true;
     game.scale.pageAlignVertically = true;
     // Load images
-    game.load.image('player_black', 'images/small_square_black.png');
+    game.load.image(particleBlackSquare, 'images/small_square_black.png');
     game.load.image(wallCyanHorizontal, 'images/rect_cyan_hori.png');
     game.load.image(wallCyanVertical, 'images/rect_cyan_vert.png');
     game.load.image(wallCyanSquare, 'images/square_cyan.png');
@@ -40,6 +40,7 @@ function create() {
     // Create walls group and load starting room
     walls = game.add.group();
     walls.enableBody = true;
+    roomIndex = game.rnd.integerInRange(0, mapData.length - 1);
     loadRoom();
     // Create wall emitter
     wallEmitter = game.add.emitter(0, 0, 10);
@@ -58,12 +59,34 @@ function create() {
     player.sprite.body.maxVelocity.y = 400;
     player.sprite.checkWorldBounds = true;
     player.sprite.events.onOutOfBounds.add(roomChange);
+    // Create objective sprite and randomise location
+    objective = {
+        sprite: game.add.sprite(game.world.width / 2, game.world.height / 2, particleBlackSquare),
+        index: game.rnd.integerInRange(0, mapData.length - 1),
+        active: true
+    }
+    while (roomIndex === objective.index)
+        objective.index = game.rnd.integerInRange(0, mapData.length - 1);
+    game.physics.arcade.enable(objective.sprite);
+    objective.sprite.anchor.x = 0.5;
+    objective.sprite.anchor.y = 0.5;
+    objective.sprite.visible = false;
+    // Create objective text
+    objectiveText = game.add.text(game.world.width - 85, game.world.height - 78, roomIndexToXY(objective.index));
+    objectiveText.fontSize = 50;
 }
 function update() {
     // Check for wall collision
     var hitWall = game.physics.arcade.collide(player.sprite, walls);
     if (hitWall)
         wallParticles(player.sprite);
+    // Check for objective collision
+    if (objective.sprite.visible === true)
+        var hitObjective = game.physics.arcade.intersects(player.sprite, objective.sprite);
+    if (hitObjective) {
+        objective.sprite.visible = false;
+        objective.active = false;
+    }
     // Slow down player naturally
     if (player.sprite.body.velocity.x > 0)
         player.sprite.body.velocity.x -= 5;
@@ -98,7 +121,7 @@ function update() {
     }
 }
 function colorWallParticles() {
-    // Determines key to use for wall particles
+    // Return image key for room's wall particles
     if (room.color === 'cyan')
         return particleCyanSquare;
     else if (room.color === 'green')
@@ -115,16 +138,15 @@ function wallParticles(player) {
     wallEmitter.start(true, 500, null, 10);
 }
 function loadRoom() {
-    // Loads variables for room
+    // Load data for room
     room = mapData[roomIndex];
-    walls.forEach(function(child) {child.kill();});
     for (var i = 0; i < room.walls.length; i++) {
         var wall = walls.create(room.walls[i][0], room.walls[i][1], room.walls[i][2]);
         wall.body.immovable = true;
     }
 }
 function roomChange() {
-    // Change roomIndex then call loadRoom
+    // Change roomIndex, kill old room and then load new room
     if (player.sprite.body.x < 0) {
         roomIndex -= 1;
         player.sprite.x += game.world.width;
@@ -138,6 +160,15 @@ function roomChange() {
         roomIndex += mapWidth;
         player.sprite.y -= game.world.height;
     }
+    walls.forEach(function(child) {child.kill();});
+    objective.sprite.visible = false;
     loadRoom();
     wallEmitter.forEach(function(child) {child.loadTexture(colorWallParticles());});
+    if (objective.index === roomIndex && objective.active) {
+        objective.sprite.visible = true;
+    }
+}
+function roomIndexToXY(index) {
+    // Return XY coordinates for given room index as an array
+    return [index % mapWidth + 1, Phaser.Math.floorTo(index / mapWidth) + 1];
 }
