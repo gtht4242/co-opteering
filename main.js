@@ -32,6 +32,10 @@ function create() {
         'down': Phaser.KeyCode.DOWN,
         'left': Phaser.KeyCode.LEFT,
         'right': Phaser.KeyCode.RIGHT,
+        'w': Phaser.KeyCode.W,
+        's': Phaser.KeyCode.S,
+        'a': Phaser.KeyCode.A,
+        'd': Phaser.KeyCode.D,
         'one': Phaser.KeyCode.ONE,
         'two': Phaser.KeyCode.TWO,
         'three': Phaser.KeyCode.THREE,
@@ -97,13 +101,13 @@ function update() {
     else if (player.sprite.body.velocity.y < 0)
         player.sprite.body.velocity.y += 5;
     // Move player
-    if (keys.right.isDown)
+    if (keys.right.isDown || keys.d.isDown)
         player.sprite.body.velocity.x += 15;
-    else if (keys.left.isDown)
+    else if (keys.left.isDown || keys.a.isDown)
         player.sprite.body.velocity.x -= 15;
-    if (keys.up.isDown)
+    if (keys.up.isDown || keys.w.isDown)
         player.sprite.body.velocity.y -= 15;
-    else if (keys.down.isDown)
+    else if (keys.down.isDown || keys.s.isDown)
         player.sprite.body.velocity.y += 15;
     // Change player color
     if (keys.one.isDown) {
