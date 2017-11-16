@@ -67,8 +67,7 @@ function create() {
     // Create objective sprite and randomise location
     objective = {
         sprite: game.add.sprite(game.world.width / 2, game.world.height / 2, particleBlackSquare),
-        index: game.rnd.integerInRange(0, mapData.length - 1),
-        active: true
+        index: game.rnd.integerInRange(0, mapData.length - 1)
     }
     while (roomIndex === objective.index)
         objective.index = game.rnd.integerInRange(0, mapData.length - 1);
@@ -87,11 +86,7 @@ function update() {
         wallParticles(player.sprite);
     // Check for objective collision
     if (objective.sprite.visible === true)
-        var hitObjective = game.physics.arcade.intersects(player.sprite, objective.sprite);
-    if (hitObjective) {
-        objective.sprite.visible = false;
-        objective.active = false;
-    }
+        var hitObjective = game.physics.arcade.overlap(player.sprite, objective.sprite, getObjective);
     // Slow down player naturally
     if (player.sprite.body.velocity.x > 0)
         player.sprite.body.velocity.x -= 5;
@@ -142,6 +137,10 @@ function wallParticles(player) {
     wallEmitter.y = player.body.y;
     wallEmitter.start(true, 500, null, 10);
 }
+function getObjective() {
+    // Kill objective once collected
+    objective.sprite.kill();
+}
 function loadRoom() {
     // Load data for room
     room = mapData[roomIndex];
@@ -169,9 +168,8 @@ function roomChange() {
     objective.sprite.visible = false;
     loadRoom();
     wallEmitter.forEach(function(child) {child.loadTexture(colorWallParticles());});
-    if (objective.index === roomIndex && objective.active) {
+    if (objective.index === roomIndex && objective.sprite.alive)
         objective.sprite.visible = true;
-    }
 }
 function roomIndexToXY(index) {
     // Return XY coordinates for given room index as an array
