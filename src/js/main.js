@@ -6,23 +6,24 @@ function preload() {
     game.scale.pageAlignHorizontally = true;
     game.scale.pageAlignVertically = true;
     // Load images
-    game.load.image(particleBlackSquare, '../images/small_square_black.png');
-    game.load.image(wallCyanHorizontal, '../images/rect_cyan_hori.png');
-    game.load.image(wallCyanVertical, '../images/rect_cyan_vert.png');
-    game.load.image(wallCyanSquare, '../images/square_cyan.png');
-    game.load.image(particleCyanSquare, '../images/small_square_cyan.png');
-    game.load.image(wallGreenHorizontal, '../images/rect_green_hori.png');
-    game.load.image(wallGreenVertical, '../images/rect_green_vert.png');
-    game.load.image(wallGreenSquare, '../images/square_green.png');
-    game.load.image(particleGreenSquare, '../images/small_square_green.png');
-    game.load.image(wallRedHorizontal, '../images/rect_red_hori.png');
-    game.load.image(wallRedVertical, '../images/rect_red_vert.png');
-    game.load.image(wallRedSquare, '../images/square_red.png');
-    game.load.image(particleRedSquare, '../images/small_square_red.png');
-    game.load.image(wallYellowHorizontal, '../images/rect_yellow_hori.png');
-    game.load.image(wallYellowVertical, '../images/rect_yellow_vert.png');
-    game.load.image(wallYellowSquare, '../images/square_yellow.png');
-    game.load.image(particleYellowSquare, '../images/small_square_yellow.png');
+    game.load.path = 'src/images/';
+    game.load.image(particleBlackSquare, 'small_square_black.png');
+    game.load.image(wallCyanHorizontal, 'rect_cyan_hori.png');
+    game.load.image(wallCyanVertical, 'rect_cyan_vert.png');
+    game.load.image(wallCyanSquare, 'square_cyan.png');
+    game.load.image(particleCyanSquare, 'small_square_cyan.png');
+    game.load.image(wallGreenHorizontal, 'rect_green_hori.png');
+    game.load.image(wallGreenVertical, 'rect_green_vert.png');
+    game.load.image(wallGreenSquare, 'square_green.png');
+    game.load.image(particleGreenSquare, 'small_square_green.png');
+    game.load.image(wallRedHorizontal, 'rect_red_hori.png');
+    game.load.image(wallRedVertical, 'rect_red_vert.png');
+    game.load.image(wallRedSquare, 'square_red.png');
+    game.load.image(particleRedSquare, 'small_square_red.png');
+    game.load.image(wallYellowHorizontal, 'rect_yellow_hori.png');
+    game.load.image(wallYellowVertical, 'rect_yellow_vert.png');
+    game.load.image(wallYellowSquare, 'square_yellow.png');
+    game.load.image(particleYellowSquare, 'small_square_yellow.png');
 }
 function create() {
     // Initialise core systems
