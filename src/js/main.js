@@ -58,8 +58,7 @@ function create() {
         color: room.color
     };
     game.physics.arcade.enable(player.sprite);
-    player.sprite.anchor.x = 0.5;
-    player.sprite.anchor.y = 0.5;
+    player.sprite.anchor.setTo(0.5, 0.5);
     player.sprite.body.maxVelocity.x = 400;
     player.sprite.body.maxVelocity.y = 400;
     player.sprite.checkWorldBounds = true;
@@ -72,8 +71,7 @@ function create() {
     while (roomIndex === objective.index)
         objective.index = game.rnd.integerInRange(0, mapData.length - 1);
     game.physics.arcade.enable(objective.sprite);
-    objective.sprite.anchor.x = 0.5;
-    objective.sprite.anchor.y = 0.5;
+    objective.sprite.anchor.setTo(0.5, 0.5);
     objective.sprite.visible = false;
     // Create objective text
     objectiveText = game.add.text(game.world.width - 85, game.world.height - 78, roomIndexToXY(objective.index));
