@@ -241,8 +241,6 @@ class Mapper extends Phaser.State {
             }
             for (var wallIndex = 0; wallIndex < room.walls.length; wallIndex++) {
                 var wall = this.map.create(room.walls[wallIndex][0] + wallX, room.walls[wallIndex][1] + wallY, room.walls[wallIndex][2]);
-                wall.inputEnabled = true;
-                wall.input.enableDrag(true);
             }
             wallX += 1250; // 385, 1925
         }
