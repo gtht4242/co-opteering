@@ -1,5 +1,7 @@
 class Menu extends Phaser.State {
     create() {
+        // Reset world scale
+        this.game.world.scale.set(1);
         // Create title text
         var titleText = this.game.add.text(this.game.world.width / 2, this.game.world.height / 4, 'Co-opteering');
         titleText.anchor.setTo(0.5, 0.5);

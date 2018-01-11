@@ -9,20 +9,20 @@ class Load extends Phaser.State {
         this.game.load.image('button_runner', 'runner_button.png');
         this.game.load.image('button_mapper', 'mapper_button.png');
         this.game.load.image('particle_black_square', 'small_square_black.png');
-        this.game.load.image('wall_cyan_horizontal', 'rect_cyan_hori.png');
-        this.game.load.image('wall_cyan_vertical', 'rect_cyan_vert.png');
+        this.game.load.image('wall_cyan_horizontal', 'NEW_rect_cyan_hori.png');
+        this.game.load.image('wall_cyan_vertical', 'NEW_rect_cyan_vert.png');
         this.game.load.image('wall_cyan_square', 'square_cyan.png');
         this.game.load.image('particle_cyan_square', 'small_square_cyan.png');
-        this.game.load.image('wall_green_horizontal', 'rect_green_hori.png');
-        this.game.load.image('wall_green_vertical', 'rect_green_vert.png');
+        this.game.load.image('wall_green_horizontal', 'NEW_rect_green_hori.png');
+        this.game.load.image('wall_green_vertical', 'NEW_rect_green_vert.png');
         this.game.load.image('wall_green_square', 'square_green.png');
         this.game.load.image('particle_green_square', 'small_square_green.png');
-        this.game.load.image('wall_red_horizontal', 'rect_red_hori.png');
-        this.game.load.image('wall_red_vertical', 'rect_red_vert.png');
+        this.game.load.image('wall_red_horizontal', 'NEW_rect_red_hori.png');
+        this.game.load.image('wall_red_vertical', 'NEW_rect_red_vert.png');
         this.game.load.image('wall_red_square', 'square_red.png');
         this.game.load.image('particle_red_square', 'small_square_red.png');
-        this.game.load.image('wall_yellow_horizontal', 'rect_yellow_hori.png');
-        this.game.load.image('wall_yellow_vertical', 'rect_yellow_vert.png');
+        this.game.load.image('wall_yellow_horizontal', 'NEW_rect_yellow_hori.png');
+        this.game.load.image('wall_yellow_vertical', 'NEW_rect_yellow_vert.png');
         this.game.load.image('wall_yellow_square', 'square_yellow.png');
         this.game.load.image('particle_yellow_square', 'small_square_yellow.png');
     }
