@@ -426,19 +426,30 @@ class Runner extends Phaser.State {
     }
     roomChange() {
         // Change roomIndex, kill old room and then load new room
+        var currentRoom = this.roomIndex;
+        var newRoom = this.roomIndex;
         if (this.player.sprite.body.x < 0) {
-            this.roomIndex -= 1;
+            newRoom -= 1;
             this.player.sprite.x += this.game.world.width;
         } else if (this.player.sprite.body.x > this.game.world.width) {
-            this.roomIndex += 1;
+            newRoom += 1;
             this.player.sprite.x -= this.game.world.width;
         } else if (this.player.sprite.body.y < 0) {
-            this.roomIndex -= this.mapWidth;
+            newRoom -= this.mapWidth;
             this.player.sprite.y += this.game.world.height;
         } else if (this.player.sprite.body.y > this.game.world.height) {
-            this.roomIndex += this.mapWidth;
+            newRoom += this.mapWidth;
             this.player.sprite.y -= this.game.world.height;
         }
+        if (this.player.color !== this.mapData[newRoom].color) {
+            this.player.sprite.x = this.game.world.width / 2;
+            this.player.sprite.y = this.game.world.height / 2;
+            this.game.camera.shake(0.03, 250);
+            while (this.roomIndex === currentRoom || this.roomIndex === newRoom || this.roomIndex === this.objective.index)
+                this.roomIndex = this.game.rnd.integerInRange(0, this.mapData.length - 1);
+        }
+        else
+            this.roomIndex = newRoom;
         this.walls.forEach(function(child) {child.kill();});
         this.hintSquares.forEach(function(child) {child.kill();});
         this.objective.sprite.visible = false;
