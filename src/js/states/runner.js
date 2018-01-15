@@ -239,6 +239,7 @@ class Runner extends Phaser.State {
             'three': Phaser.KeyCode.THREE,
             'four': Phaser.KeyCode.FOUR
         });
+        this.game.input.keyboard.addKeyCapture([Phaser.KeyCode.UP, Phaser.KeyCode.DOWN, Phaser.KeyCode.LEFT, Phaser.KeyCode.RIGHT]);
         // Create walls and hint squares group
         this.walls = this.game.add.group();
         this.walls.enableBody = true;
