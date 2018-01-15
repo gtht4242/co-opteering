@@ -1,6 +1,6 @@
 class Game extends Phaser.Game {
     constructor() {
-        super(1250, 550);
+        super(1250, 550, Phaser.AUTO, "game");
         this.state.add('Boot', Boot);
         this.state.add('Load', Load);
         this.state.add('Menu', Menu);
