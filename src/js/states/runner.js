@@ -277,6 +277,16 @@ class Runner extends Phaser.State {
         var objectiveText = this.game.add.text(this.game.world.width - 85, this.game.world.height - 78,
         this.roomIndexToXY(this.objective.index));
         objectiveText.fontSize = 50;
+        // Create HUD group and color button indicators
+        this.HUD = this.game.add.group();
+        var indicatorCyan = this.HUD.create(20, this.game.world.height - 90, 'HUD_indicator_cyan');
+        var indicatorGreen = this.HUD.create(120, this.game.world.height - 90, 'HUD_indicator_green');
+        var indicatorRed = this.HUD.create(220, this.game.world.height - 90, 'HUD_indicator_red');
+        var indicatorYellow = this.HUD.create(320, this.game.world.height - 90, 'HUD_indicator_yellow');
+        indicatorCyan.alpha = 0.6;
+        indicatorGreen.alpha = 0.6;
+        indicatorRed.alpha = 0.6;
+        indicatorYellow.alpha = 0.6;
     }
     update() {
         // Check for all objectives collected
