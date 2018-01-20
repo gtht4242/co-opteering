@@ -1,5 +1,6 @@
 # Custom local
 project_files
+.vscode
 
 # Logs
 logs
