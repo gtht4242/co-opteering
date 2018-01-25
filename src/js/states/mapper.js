@@ -1,6 +1,6 @@
 class Mapper extends Phaser.State {
     create() {
-        // Initialise mapData and other variables
+        // Create mapData and other variables
         this.WALLTHICKNESS = 100;
         this.mapWidth = 5;
         this.objectiveCount = 1;
@@ -224,11 +224,11 @@ class Mapper extends Phaser.State {
                 ]
             }
         ]
-        // Add ESC to menu key callback
+        // Add ESC hotkey for exiting to menu
         var exitKey = this.game.input.keyboard.addKey(Phaser.Keyboard.ESC);
         exitKey.onDown.add(this.startMenu, this);
         this.game.input.keyboard.removeKeyCapture(Phaser.Keyboard.ESC);
-        // Draw map
+        // Create map
         this.game.world.scale.set(0.2);
         this.map = this.game.add.group();
         var wallX = 0;
@@ -237,12 +237,12 @@ class Mapper extends Phaser.State {
             var room = this.mapData[roomIndex];
             if (roomIndex % this.mapWidth === 0 && roomIndex !== 0) {
                 wallX = 0;
-                wallY += 550; // 108, 540
+                wallY += 550;
             }
             for (var wallIndex = 0; wallIndex < room.walls.length; wallIndex++) {
                 var wall = this.map.create(room.walls[wallIndex][0] + wallX, room.walls[wallIndex][1] + wallY, room.walls[wallIndex][2]);
             }
-            wallX += 1250; // 385, 1925
+            wallX += 1250;
         }
     }
     startMenu() {

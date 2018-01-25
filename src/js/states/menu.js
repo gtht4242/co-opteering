@@ -8,33 +8,37 @@ class Menu extends Phaser.State {
         titleText.fontSize = 60;
         // Create runner and mapper mode buttons
         var runnerButton = this.game.add.button(this.game.world.width / 3, (this.game.world.height / 3) * 2, 'button_runner', this.startRunner);
-        var mapperButton = this.game.add.button((this.game.world.width / 3) * 2, (this.game.world.height / 3) * 2, 'button_mapper', this.startMapper);
         runnerButton.anchor.setTo(0.5, 0.5);
-        mapperButton.anchor.setTo(0.5, 0.5);
         runnerButton.alpha = 0.5;
+        runnerButton.onInputOver.add(this.fullAlpha, {button: runnerButton});
+        runnerButton.onInputOut.add(this.halfAlpha, {button: runnerButton});
+        var mapperButton = this.game.add.button((this.game.world.width / 3) * 2, (this.game.world.height / 3) * 2, 'button_mapper', this.startMapper);
+        mapperButton.anchor.setTo(0.5, 0.5);
         mapperButton.alpha = 0.5;
-        runnerButton.onInputOver.add(this.buttonOver, {button: runnerButton});
-        mapperButton.onInputOver.add(this.buttonOver, {button: mapperButton});
-        runnerButton.onInputOut.add(this.buttonOut, {button: runnerButton});
-        mapperButton.onInputOut.add(this.buttonOut, {button: mapperButton});
+        mapperButton.onInputOver.add(this.fullAlpha, {button: mapperButton});
+        mapperButton.onInputOut.add(this.halfAlpha, {button: mapperButton});
         // Create hotkey shortcuts
         var keyR = this.game.input.keyboard.addKey(Phaser.Keyboard.R);
-        var keyM = this.game.input.keyboard.addKey(Phaser.Keyboard.M);
         keyR.onDown.add(this.startRunner, this);
-        keyM.onDown.add(this.startMapper, this);
         this.game.input.keyboard.removeKeyCapture(Phaser.Keyboard.R);
+        var keyM = this.game.input.keyboard.addKey(Phaser.Keyboard.M);
+        keyM.onDown.add(this.startMapper, this);
         this.game.input.keyboard.removeKeyCapture(Phaser.Keyboard.M);
     }
     startRunner() {
+        // Start runner state
         this.game.state.start('Runner');
     }
     startMapper() {
+        // Start mapper state
         this.game.state.start('Mapper');
     }
-    buttonOver(button) {
+    fullAlpha(button) {
+        // Set alpha of button to 1
         button.alpha = 1;
     }
-    buttonOut(button) {
+    halfAlpha(button) {
+        // Set alpha of button to 0.5
         button.alpha = 0.5;
     }
 }

@@ -10,7 +10,7 @@ class Boot extends Phaser.State {
         this.game.scale.pageAlignHorizontally = true;
         this.game.scale.pageAlignVertically = true;
         this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-        // Initialise core systems
+        // Start physics system
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         // Start load state
         this.game.state.start('Load');

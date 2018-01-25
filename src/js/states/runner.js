@@ -1,6 +1,6 @@
 class Runner extends Phaser.State {
     create() {
-        // Initialise mapData and other variables
+        // Create mapData and other variables
         this.WALLTHICKNESS = 100;
         this.mapWidth = 5;
         this.objectiveCount = 1;
@@ -274,8 +274,7 @@ class Runner extends Phaser.State {
         this.objective.sprite.anchor.setTo(0.5, 0.5);
         this.objective.sprite.visible = false;
         // Create objective text
-        var objectiveText = this.game.add.text(this.game.world.width - 85, this.game.world.height - 78,
-        this.roomIndexToXY(this.objective.index));
+        var objectiveText = this.game.add.text(this.game.world.width - 85, this.game.world.height - 78, this.roomIndexToXY(this.objective.index));
         objectiveText.fontSize = 50;
         // Create HUD group and color button indicators
         this.HUD = this.game.add.group();
@@ -289,7 +288,7 @@ class Runner extends Phaser.State {
         indicatorYellow.alpha = 0.6;
     }
     update() {
-        // Check for all objectives collected
+        // Check if all objectives collected then return to menu
         if (this.objectiveCount <= 0) {
             var winText = this.game.add.text(this.game.world.width / 2, this.game.world.height / 2, 'You win!');
             winText.anchor.setTo(0.5, 0.5);
@@ -298,31 +297,36 @@ class Runner extends Phaser.State {
         }
         // Check for wall collision
         var hitWall = this.game.physics.arcade.collide(this.player.sprite, this.walls);
-        if (hitWall)
+        if (hitWall) {
             this.wallParticles(this.player.sprite);
+        }
         // Check for objective collision
-        if (this.objective.sprite.visible === true)
-            var hitObjective = this.game.physics.arcade.overlap(this.player.sprite, this.objective.sprite,
-            this.killObjective, null, this);
-        // Slow down player naturally
-        if (this.player.sprite.body.velocity.x > 0)
+        if (this.objective.sprite.visible === true) {
+            var hitObjective = this.game.physics.arcade.overlap(this.player.sprite, this.objective.sprite, this.killObjective, null, this);
+        }
+        // Reduce player velocity
+        if (this.player.sprite.body.velocity.x > 0) {
             this.player.sprite.body.velocity.x -= 5;
-        else if (this.player.sprite.body.velocity.x < 0)
+        } else if (this.player.sprite.body.velocity.x < 0) {
             this.player.sprite.body.velocity.x += 5;
-        if (this.player.sprite.body.velocity.y > 0)
+        }
+        if (this.player.sprite.body.velocity.y > 0) {
             this.player.sprite.body.velocity.y -= 5;
-        else if (this.player.sprite.body.velocity.y < 0)
+        } else if (this.player.sprite.body.velocity.y < 0) {
             this.player.sprite.body.velocity.y += 5;
-        // Move player
-        if (this.keys.right.isDown || this.keys.d.isDown)
+        }
+        // Detect input then increase player velocity
+        if (this.keys.right.isDown || this.keys.d.isDown) {
             this.player.sprite.body.velocity.x += 15;
-        else if (this.keys.left.isDown || this.keys.a.isDown)
+        } else if (this.keys.left.isDown || this.keys.a.isDown) {
             this.player.sprite.body.velocity.x -= 15;
-        if (this.keys.up.isDown || this.keys.w.isDown)
+        }
+        if (this.keys.up.isDown || this.keys.w.isDown) {
             this.player.sprite.body.velocity.y -= 15;
-        else if (this.keys.down.isDown || this.keys.s.isDown)
+        } else if (this.keys.down.isDown || this.keys.s.isDown) {
             this.player.sprite.body.velocity.y += 15;
-        // Change player color
+        }
+        // Detect input then change player color
         if (this.keys.one.isDown) {
             this.player.sprite.loadTexture(this.particleCyanSquare);
             this.player.color = 'cyan';
@@ -343,28 +347,29 @@ class Runner extends Phaser.State {
     }
     colorWallParticles(room) {
         // Return image key for room's wall particles
-        if (room.color === 'cyan')
+        if (room.color === 'cyan') {
             return this.particleCyanSquare;
-        else if (room.color === 'green')
+        } else if (room.color === 'green') {
             return this.particleGreenSquare;
-        else if (room.color === 'red')
+        } else if (room.color === 'red') {
             return this.particleRedSquare;
-        else if (room.color === 'yellow')
+        } else if (room.color === 'yellow') {
             return this.particleYellowSquare;
+        }
     }
     wallParticles(player) {
-        // Emit wall particles at current location
+        // Emit wall particles at player location
         this.wallEmitter.x = player.body.x;
         this.wallEmitter.y = player.body.y;
         this.wallEmitter.start(true, 500, null, 10);
     }
     killObjective() {
-        // Kill objective and decrement objectiveCount once collected
+        // Kill objective and decrement objectiveCount
         this.objective.sprite.kill();
-        this.objectiveCount -= 1;
+        this.objectiveCount--;
     }
     getPossibleHints(roomIndex, direction) {
-        // Return possible room indexes for hint squares
+        // Return possible room indexes for hint squares based on direction
         var result = [];
         switch (direction) {
             case 'right':
@@ -401,49 +406,56 @@ class Runner extends Phaser.State {
         var hintY = y;
         if (possibleHints.length !== 0) {
             hintIndex = this.game.rnd.pick(possibleHints);
-            if (direction === 'left' || direction === 'right')
+            if (direction === 'left' || direction === 'right') {
                 hintDistance = Math.abs(hintIndex - roomIndex);
-            else if (direction === 'up' || direction === 'down')
+            } else if (direction === 'up' || direction === 'down') {
                 hintDistance = Math.abs(hintIndex - roomIndex) / this.mapWidth;
+            }
             for (var i = 0; i < hintDistance; i++) {
                 var hintSquare = this.hintSquares.create(hintX, hintY, this.colorWallParticles(this.mapData[hintIndex]));
                 hintSquare.alpha = 0.4;
-                if (direction === 'left' || direction === 'right')
+                if (direction === 'left' || direction === 'right') {
                     hintY += 48;
-                else if (direction === 'up' || direction === 'down')
+                } else if (direction === 'up' || direction === 'down') {
                     hintX += 48;
+                }
             }
         }
 
     }
     loadRoom() {
-        // Load data for room
+        // Load walls and hint squares for current room
         var wallDirections = [];
         this.room = this.mapData[this.roomIndex];
         for (var i = 0; i < this.room.walls.length; i++) {
             var wall = this.walls.create(this.room.walls[i][0], this.room.walls[i][1], this.room.walls[i][2]);
             wall.body.immovable = true;
-            if (this.room.walls[i][3])
+            if (this.room.walls[i][3]) {
                 wallDirections.push(this.room.walls[i][3]);
+            }
         }
-        if (!wallDirections.includes('up'))
+        if (!wallDirections.includes('up')) {
             this.createHintSquares(this.roomIndex, this.game.world.width / 3 + 110, 132, 'up');
-        if (!wallDirections.includes('right'))
+        }
+        if (!wallDirections.includes('right')) {
             this.createHintSquares(this.roomIndex, this.game.world.width - this.WALLTHICKNESS - 64, 207, 'right');
-        if (!wallDirections.includes('down'))
+        }
+        if (!wallDirections.includes('down')) {
             this.createHintSquares(this.roomIndex, this.game.world.width / 3 + 110, this.game.world.height - this.WALLTHICKNESS - 64, 'down');
-        if (!wallDirections.includes('left'))
+        }
+        if (!wallDirections.includes('left')) {
             this.createHintSquares(this.roomIndex, 132, 207, 'left');
+        }
     }
     roomChange() {
-        // Change roomIndex, kill old room and then load new room
+        // Change roomIndex based on player color, kill old room and then load new room
         var currentRoom = this.roomIndex;
         var newRoom = this.roomIndex;
         if (this.player.sprite.body.x < 0) {
-            newRoom -= 1;
+            newRoom--;
             this.player.sprite.x += this.game.world.width;
         } else if (this.player.sprite.body.x > this.game.world.width) {
-            newRoom += 1;
+            newRoom++;
             this.player.sprite.x -= this.game.world.width;
         } else if (this.player.sprite.body.y < 0) {
             newRoom -= this.mapWidth;
@@ -456,11 +468,12 @@ class Runner extends Phaser.State {
             this.player.sprite.x = this.game.world.width / 2;
             this.player.sprite.y = this.game.world.height / 2;
             this.game.camera.shake(0.03, 250);
-            while (this.roomIndex === currentRoom || this.roomIndex === newRoom || this.roomIndex === this.objective.index)
+            while (this.roomIndex === currentRoom || this.roomIndex === newRoom || this.roomIndex === this.objective.index) {
                 this.roomIndex = this.game.rnd.integerInRange(0, this.mapData.length - 1);
-        }
-        else
+            }
+        } else {
             this.roomIndex = newRoom;
+        }
         this.walls.forEach(function(child) {child.kill();});
         this.hintSquares.forEach(function(child) {child.kill();});
         this.objective.sprite.visible = false;
