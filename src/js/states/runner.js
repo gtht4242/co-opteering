@@ -1,229 +1,18 @@
 class Runner extends Phaser.State {
+    init(seed) {
+        // Set passed-in state variables
+        this.mapSeed = [seed];
+        console.log(this.mapSeed);
+    }
     create() {
+        // Reset world scale
+        this.game.world.scale.set(1);
         // Create mapData and other variables
         this.WALLTHICKNESS = 100;
-        this.mapWidth = 5;
+        this.colors = ['cyan', 'green', 'red', 'yellow'];
+        this.mapWidth = 5; // Must be odd
         this.objectiveCount = 1;
-        this.particleBlackSquare = 'particle_black_square';
-        this.wallCyanHorizontal = 'wall_cyan_horizontal';
-        this.wallCyanVertical = 'wall_cyan_vertical';
-        this.wallCyanSquare = 'wall_cyan_square';
-        this.particleCyanSquare = 'particle_cyan_square';
-        this.wallGreenHorizontal = 'wall_green_horizontal';
-        this.wallGreenVertical = 'wall_green_vertical';
-        this.wallGreenSquare = 'wall_green_square';
-        this.particleGreenSquare = 'particle_green_square';
-        this.wallRedHorizontal = 'wall_red_horizontal';
-        this.wallRedVertical = 'wall_red_vertical';
-        this.wallRedSquare = 'wall_red_square';
-        this.particleRedSquare = 'particle_red_square';
-        this.wallYellowHorizontal = 'wall_yellow_horizontal';
-        this.wallYellowVertical = 'wall_yellow_vertical';
-        this.wallYellowSquare = 'wall_yellow_square';
-        this.particleYellowSquare = 'particle_yellow_square';
-        this.mapData = [
-            {
-                color: 'green',
-                walls: [
-                    [0, 0, this.wallGreenHorizontal, 'up'],
-                    [0, this.game.world.height - this.WALLTHICKNESS, this.wallGreenHorizontal, 'down'],
-                    [0, 0, this.wallGreenVertical, 'left']
-                ]
-            },
-            {
-                color: 'cyan',
-                walls: [
-                    [0, 0, this.wallCyanHorizontal, 'up'],
-                    [this.game.world.width - this.WALLTHICKNESS, 0, this.wallCyanVertical, 'right'],
-                    [0, this.game.world.height - this.WALLTHICKNESS, this.wallCyanSquare]
-                ]
-            },
-            {
-                color: 'cyan',
-                walls: [
-                    [0, 0, this.wallCyanHorizontal, 'up'],
-                    [this.game.world.width - this.WALLTHICKNESS, 0, this.wallCyanVertical, 'right'],
-                    [0, 0, this.wallCyanVertical, 'left']
-                ]
-            },
-            {
-                color: 'red',
-                walls: [
-                    [0, 0, this.wallRedHorizontal, 'up'],
-                    [this.game.world.width - this.WALLTHICKNESS, this.game.world.height - this.WALLTHICKNESS, this.wallRedSquare],
-                    [0, 0, this.wallRedVertical, 'left']
-                ]
-            },
-            {
-                color: 'cyan',
-                walls: [
-                    [0, 0, this.wallCyanHorizontal, 'up'],
-                    [this.game.world.width - this.WALLTHICKNESS, 0, this.wallCyanVertical, 'right'],
-                    [0, this.game.world.height - this.WALLTHICKNESS, this.wallCyanSquare]
-
-                ]
-            },
-            {
-                color: 'red',
-                walls: [
-                    [0, 0, this.wallRedHorizontal, 'up'],
-                    [this.game.world.width - this.WALLTHICKNESS, this.game.world.height - this.WALLTHICKNESS, this.wallRedSquare],
-                    [0, 0, this.wallRedVertical, 'left']
-                ]
-            },
-            {
-                color: 'yellow',
-                walls: [
-                    [0, 0, this.wallYellowSquare],
-                    [this.game.world.width - this.WALLTHICKNESS, 0, this.wallYellowSquare],
-                    [this.game.world.width - this.WALLTHICKNESS, this.game.world.height - this.WALLTHICKNESS, this.wallYellowSquare],
-                    [0, this.game.world.height - this.WALLTHICKNESS, this.wallYellowSquare]
-                ]
-            },
-            {
-                color: 'green',
-                walls: [
-                    [0, 0, this.wallGreenSquare],
-                    [this.game.world.width - this.WALLTHICKNESS, 0, this.wallGreenSquare],
-                    [this.game.world.width - this.WALLTHICKNESS, this.game.world.height - this.WALLTHICKNESS, this.wallGreenSquare],
-                    [0, this.game.world.height - this.WALLTHICKNESS, this.wallGreenSquare]
-                ]
-            },
-            {
-                color: 'yellow',
-                walls: [
-                    [0, 0, this.wallYellowSquare],
-                    [this.game.world.width - this.WALLTHICKNESS, 0, this.wallYellowVertical, 'right'],
-                    [0, this.game.world.height - this.WALLTHICKNESS, this.wallYellowSquare]
-                ]
-            },
-            {
-                color: 'cyan',
-                walls: [
-                    [0, 0, this.wallCyanVertical, 'left'],
-                    [this.game.world.width - this.WALLTHICKNESS, 0, this.wallCyanVertical, 'right']
-                ]
-            },
-            {
-                color: 'yellow',
-                walls: [
-                    [0, 0, this.wallYellowVertical, 'left'],
-                    [this.game.world.width - this.WALLTHICKNESS, 0, this.wallYellowVertical, 'right']
-                ]
-            },
-            {
-                color: 'yellow',
-                walls: [
-                    [this.game.world.width - this.WALLTHICKNESS, 0, this.wallYellowSquare],
-                    [0, this.game.world.height - this.WALLTHICKNESS, this.wallYellowHorizontal, 'down'],
-                    [0, 0, this.wallYellowVertical, 'left']
-                ]
-            },
-            {
-                color: 'cyan',
-                walls: [
-                    [0, 0, this.wallCyanSquare],
-                    [this.game.world.width - this.WALLTHICKNESS, 0, this.wallCyanSquare],
-                    [this.game.world.width - this.WALLTHICKNESS, this.game.world.height - this.WALLTHICKNESS, this.wallCyanSquare],
-                    [0, this.game.world.height - this.WALLTHICKNESS, this.wallCyanSquare]
-                ]
-            },
-            {
-                color: 'green',
-                walls: [
-                    [0, 0, this.wallGreenSquare],
-                    [this.game.world.width - this.WALLTHICKNESS, 0, this.wallGreenSquare],
-                    [0, this.game.world.height - this.WALLTHICKNESS, this.wallGreenHorizontal, 'down']
-                ]
-            },
-            {
-                color: 'green',
-                walls: [
-                    [0, 0, this.wallGreenSquare],
-                    [this.game.world.width - this.WALLTHICKNESS, 0, this.wallGreenVertical, 'right'],
-                    [0, this.game.world.height - this.WALLTHICKNESS, this.wallGreenSquare]
-                ]
-            },
-            {
-                color: 'red',
-                walls: [
-                    [this.game.world.width - this.WALLTHICKNESS, 0, this.wallRedVertical, 'right'],
-                    [0, 0, this.wallRedVertical, 'left']
-                ]
-            },
-            {
-                color: 'green',
-                walls: [
-                    [0, 0, this.wallGreenHorizontal, 'up'],
-                    [this.game.world.width - this.WALLTHICKNESS, this.game.world.height - this.WALLTHICKNESS, this.wallGreenSquare],
-                    [0, 0, this.wallGreenVertical, 'left']
-                ]
-            },
-            {
-                color: 'red',
-                walls: [
-                    [this.game.world.width - this.WALLTHICKNESS, 0, this.wallRedVertical, 'right'],
-                    [0, this.game.world.height - this.WALLTHICKNESS, this.wallRedHorizontal, 'down'],
-                    [0, 0, this.wallRedSquare]
-                ]
-            },
-            {
-                color: 'yellow',
-                walls: [
-                    [0, 0, this.wallYellowHorizontal, 'up'],
-                    [this.game.world.width - this.WALLTHICKNESS, this.game.world.height - this.WALLTHICKNESS, this.wallYellowSquare],
-                    [0, 0, this.wallYellowVertical, 'left']
-                ]
-            },
-            {
-                color: 'red',
-                walls: [
-                    [0, 0, this.wallRedSquare],
-                    [this.game.world.width - this.WALLTHICKNESS, 0, this.wallRedVertical, 'right'],
-                    [0, this.game.world.height - this.WALLTHICKNESS, this.wallRedSquare]
-                ]
-            },
-            {
-                color: 'yellow',
-                walls: [
-                    [this.game.world.width - this.WALLTHICKNESS, 0, this.wallYellowSquare],
-                    [0, this.game.world.height - this.WALLTHICKNESS, this.wallYellowHorizontal, 'down'],
-                    [0, 0, this.wallYellowVertical, 'left']
-                ]
-            },
-            {
-                color: 'cyan',
-                walls: [
-                    [0, 0, this.wallCyanSquare],
-                    [this.game.world.width - this.WALLTHICKNESS, 0, this.wallCyanSquare],
-                    [0, this.game.world.height - this.WALLTHICKNESS, this.wallCyanHorizontal, 'down']
-                ]
-            },
-            {
-                color: 'green',
-                walls: [
-                    [0, 0, this.wallGreenHorizontal, 'up'],
-                    [this.game.world.width - this.WALLTHICKNESS, 0, this.wallGreenVertical, 'right'],
-                    [0, this.game.world.height - this.WALLTHICKNESS, this.wallGreenHorizontal, 'down']
-                ]
-            },
-            {
-                color: 'cyan',
-                walls: [
-                    [this.game.world.width - this.WALLTHICKNESS, 0, this.wallCyanVertical, 'right'],
-                    [0, this.game.world.height - this.WALLTHICKNESS, this.wallCyanHorizontal, 'down'],
-                    [0, 0, this.wallCyanVertical, 'left']
-                ]
-            },
-            {
-                color: 'red',
-                walls: [
-                    [this.game.world.width - this.WALLTHICKNESS, 0, this.wallRedVertical, 'right'],
-                    [0, this.game.world.height - this.WALLTHICKNESS, this.wallRedHorizontal, 'down'],
-                    [0, 0, this.wallRedVertical, 'left']
-                ]
-            }
-        ]
+        this.mapData = this.generateMap(this.mapSeed);
         // Initialise keys
         this.keys = this.game.input.keyboard.addKeys({
             'up': Phaser.KeyCode.UP,
@@ -245,16 +34,16 @@ class Runner extends Phaser.State {
         this.walls.enableBody = true;
         this.hintSquares = this.game.add.group();
         // Randomise starting room index and load room
-        this.roomIndex = this.game.rnd.integerInRange(0, this.mapData.length - 1);
+        this.roomIndex = this.randomIndex();
         this.loadRoom();
         // Create wall emitter
         this.wallEmitter = this.game.add.emitter(0, 0, 10);
-        this.wallEmitter.makeParticles(this.colorWallParticles(this.room));
+        this.wallEmitter.makeParticles(this.colorWallParticles(this.room.color));
         this.wallEmitter.gravity = 0;
         this.wallEmitter.setAlpha(0.4, 0.6);
         // Create player object and set variables
         this.player = {
-            sprite: this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, this.colorWallParticles(this.room)),
+            sprite: this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, this.colorWallParticles(this.room.color)),
             color: this.room.color
         };
         this.game.physics.arcade.enable(this.player.sprite);
@@ -265,8 +54,8 @@ class Runner extends Phaser.State {
         this.player.sprite.events.onOutOfBounds.add(this.roomChange, this);
         // Create objective sprite and randomise location
         this.objective = {
-            sprite: this.game.add.sprite(this.game.world.width / 2, this.game.world.height / 2, this.particleBlackSquare),
-            index: this.game.rnd.integerInRange(0, this.mapData.length - 1)
+            sprite: this.game.add.sprite(this.game.world.width / 2, this.game.world.height / 2, 'particle_black_square'),
+            index: this.randomIndex()
         }
         while (this.roomIndex === this.objective.index)
             this.objective.index = this.game.rnd.integerInRange(0, this.mapData.length - 1);
@@ -328,16 +117,16 @@ class Runner extends Phaser.State {
         }
         // Detect input then change player color
         if (this.keys.one.isDown) {
-            this.player.sprite.loadTexture(this.particleCyanSquare);
+            this.player.sprite.loadTexture('particle_cyan_square');
             this.player.color = 'cyan';
         } else if (this.keys.two.isDown) {
-            this.player.sprite.loadTexture(this.particleGreenSquare);
+            this.player.sprite.loadTexture('particle_green_square');
             this.player.color = 'green';
         } else if (this.keys.three.isDown) {
-            this.player.sprite.loadTexture(this.particleRedSquare);
+            this.player.sprite.loadTexture('particle_red_square');
             this.player.color = 'red';
         } else if (this.keys.four.isDown) {
-            this.player.sprite.loadTexture(this.particleYellowSquare);
+            this.player.sprite.loadTexture('particle_yellow_square');
             this.player.color = 'yellow';
         }
     }
@@ -345,16 +134,57 @@ class Runner extends Phaser.State {
         // Start menu state
         this.game.state.start('Menu');
     }
-    colorWallParticles(room) {
-        // Return image key for room's wall particles
-        if (room.color === 'cyan') {
-            return this.particleCyanSquare;
-        } else if (room.color === 'green') {
-            return this.particleGreenSquare;
-        } else if (room.color === 'red') {
-            return this.particleRedSquare;
-        } else if (room.color === 'yellow') {
-            return this.particleYellowSquare;
+    randomIndex() {
+        // Return random index in mapData
+        this.game.rnd.sow([Math.random()]);
+        return this.game.rnd.integerInRange(0, this.mapData.length - 1)
+    }
+    colorHorizontalWall(color) {
+        // Return image key for horizontal wall of color
+        if (color === 'cyan') {
+            return 'wall_cyan_horizontal';
+        } else if (color === 'green') {
+            return 'wall_green_horizontal';
+        } else if (color === 'red') {
+            return 'wall_red_horizontal';
+        } else if (color === 'yellow') {
+            return 'wall_yellow_horizontal';
+        }
+    }
+    colorVerticalWall(color) {
+        // Return image key for vertical wall of color
+        if (color === 'cyan') {
+            return 'wall_cyan_vertical';
+        } else if (color === 'green') {
+            return 'wall_green_vertical';
+        } else if (color === 'red') {
+            return 'wall_red_vertical';
+        } else if (color === 'yellow') {
+            return 'wall_yellow_vertical';
+        }
+    }
+    colorSquareWall(color) {
+        // Return image key for square wall of color
+        if (color === 'cyan') {
+            return 'wall_cyan_square';
+        } else if (color === 'green') {
+            return 'wall_green_square';
+        } else if (color === 'red') {
+            return 'wall_red_square';
+        } else if (color === 'yellow') {
+            return 'wall_yellow_square';
+        }
+    }
+    colorWallParticles(color) {
+        // Return image key for wall particles of color
+        if (color === 'cyan') {
+            return 'particle_cyan_square';
+        } else if (color === 'green') {
+            return 'particle_green_square';
+        } else if (color === 'red') {
+            return 'particle_red_square';
+        } else if (color === 'yellow') {
+            return 'particle_yellow_square';
         }
     }
     wallParticles(player) {
@@ -378,7 +208,7 @@ class Runner extends Phaser.State {
                 }
                 break;
             case 'left':
-                for (var i = roomIndex - 1; (!(i % this.mapWidth === 4) && i >= 0); i -= 1) {
+                for (var i = roomIndex - 1; (!(i % this.mapWidth === this.mapWidth - 1) && i >= 0); i -= 1) {
                     result.push(i);
                 }
                 break;
@@ -412,7 +242,7 @@ class Runner extends Phaser.State {
                 hintDistance = Math.abs(hintIndex - roomIndex) / this.mapWidth;
             }
             for (var i = 0; i < hintDistance; i++) {
-                var hintSquare = this.hintSquares.create(hintX, hintY, this.colorWallParticles(this.mapData[hintIndex]));
+                var hintSquare = this.hintSquares.create(hintX, hintY, this.colorWallParticles(this.mapData[hintIndex].color));
                 hintSquare.alpha = 0.4;
                 if (direction === 'left' || direction === 'right') {
                     hintY += 48;
@@ -469,7 +299,7 @@ class Runner extends Phaser.State {
             this.player.sprite.y = this.game.world.height / 2;
             this.game.camera.shake(0.03, 250);
             while (this.roomIndex === currentRoom || this.roomIndex === newRoom || this.roomIndex === this.objective.index) {
-                this.roomIndex = this.game.rnd.integerInRange(0, this.mapData.length - 1);
+                this.roomIndex = this.randomIndex();
             }
         } else {
             this.roomIndex = newRoom;
@@ -478,12 +308,154 @@ class Runner extends Phaser.State {
         this.hintSquares.forEach(function(child) {child.kill();});
         this.objective.sprite.visible = false;
         this.loadRoom();
-        this.wallEmitter.forEach(function(child) {child.loadTexture(this.colorWallParticles(this.room));}, this);
+        this.wallEmitter.forEach(function(child) {child.loadTexture(this.colorWallParticles(this.room.color));}, this);
         if (this.objective.index === this.roomIndex && this.objective.sprite.alive)
             this.objective.sprite.visible = true;
     }
     roomIndexToXY(roomIndex) {
         // Return XY coordinates for given room index as an array
         return [roomIndex % this.mapWidth + 1, Phaser.Math.floorTo(roomIndex / this.mapWidth) + 1];
+    }
+    generateMap(seed) {
+        // Return map data array for given seed
+        var topWall;
+        var rightWall;
+        var bottomWall;
+        var leftWall;
+        var randomisedWall;
+        var mapData = [];
+        var roomWalls;
+        var roomColor;
+        this.game.rnd.sow(seed);
+        for (var roomIndex = 0; roomIndex < this.mapWidth ** 2; roomIndex++) {
+            roomWalls = [];
+            roomColor = this.game.rnd.pick(this.colors);
+            topWall = false;
+            rightWall = false;
+            bottomWall = false;
+            leftWall = false;
+            randomisedWall = false;
+            if (roomIndex === 0) {
+                // Top-left corner
+                topWall = true;
+                leftWall = true;
+            } else if (roomIndex === this.mapWidth - 1) {
+                // Top-right corner
+                topWall = true;
+                rightWall = true;
+            } else if (roomIndex === this.mapWidth * (this.mapWidth - 1)) {
+                // Bottom-left corner
+                bottomWall = true;
+                leftWall = true;
+            } else if (roomIndex === this.mapWidth ** 2 - 1) {
+                // Bottom-right corner
+                bottomWall = true;
+                rightWall = true;
+            } else if (roomIndex < this.mapWidth) {
+                // Top border
+                topWall = true;
+            } else if (roomIndex % this.mapWidth === this.mapWidth - 1) {
+                // Right border
+                rightWall = true;
+            } else if (roomIndex > this.mapWidth * (this.mapWidth - 1) - 1) {
+                // Bottom border
+                bottomWall = true;
+            } else if (roomIndex % this.mapWidth === 0) {
+                // Left border
+                leftWall = true;
+            }
+            if (leftWall) {
+                roomWalls.push([0, 0, this.colorVerticalWall(roomColor), 'left']);
+            } else {
+                // Match left room's right wall
+                if (roomIndex % this.mapWidth !== 0) {
+                    for (let i = 0; i < mapData[roomIndex - 1].walls.length; i++) {
+                        if (mapData[roomIndex - 1].walls[i].includes('right')) {
+                            roomWalls.push([0, 0, this.colorVerticalWall(roomColor), 'left']);
+                            break;                 
+                        }
+                    }
+                }
+            }
+            if (topWall) {
+                roomWalls.push([0, 0, this.colorHorizontalWall(roomColor), 'up']);
+            } else {
+                // Match up room's bottom wall
+                if (roomIndex >= this.mapWidth) {
+                    for (let i = 0; i < mapData[roomIndex - this.mapWidth].walls.length; i++) {
+                        if (mapData[roomIndex - this.mapWidth].walls[i].includes('down')) {
+                            roomWalls.push([0, 0, this.colorHorizontalWall(roomColor), 'up']);
+                            break;         
+                        }
+                    }
+                }
+            }
+            if (rightWall) {
+                roomWalls.push([this.game.world.width - this.WALLTHICKNESS, 0, this.colorVerticalWall(roomColor), 'right']);
+            } else if (roomIndex % 2 === 0) {
+                // Pick randomly between wall/no wall
+                if (roomIndex % this.mapWidth !== this.mapWidth - 1) {
+                    if (this.game.rnd.frac() > 0.5) {
+                        randomisedWall = true;
+                        roomWalls.push([this.game.world.width - this.WALLTHICKNESS, 0, this.colorVerticalWall(roomColor), 'right']);
+                    }
+                }
+            }
+            if (bottomWall) {
+                roomWalls.push([0, this.game.world.height - this.WALLTHICKNESS, this.colorHorizontalWall(roomColor), 'down']);
+            } else if (roomIndex % 2 === 0) {
+                // Pick randomly between wall/no wall
+                if (roomIndex < this.mapWidth * (this.mapWidth - 1)) {
+                    if (!randomisedWall) {
+                        randomisedWall = true;
+                        roomWalls.push([0, this.game.world.height - this.WALLTHICKNESS, this.colorHorizontalWall(roomColor), 'down']);
+                    }
+                }
+            }
+            if (roomWalls > 3 && roomIndex === this.mapWidth ** 2 - 1) {
+                // Fix bottom-right corner closed in room
+                if (this.game.rnd.frac() > 0.5) {
+                    // Remove left walls
+                    roomWalls.splice(0, 1);
+                    for (let i = 0; i < mapData[roomIndex - 1].walls.length; i++) {
+                        if (mapData[roomIndex - 1].walls[i].includes('right')) {
+                            mapData[roomIndex - 1].walls.splice(i, 1);
+                            break;
+                        }
+                    }
+                } else {
+                    // Remove right walls
+                    roomWalls.splice(1, 1);
+                    for (let i = 0; i < mapData[roomIndex - this.mapWidth].walls.length; i++) {
+                        if (mapData[roomIndex - this.mapWidth].walls[i].includes('down')) {
+                            mapData[roomIndex - this.mapWidth].walls.splice(i, 1);
+                            break;
+                        }
+                    }
+                }
+            } else if (roomWalls.length > 3 && roomIndex % this.mapWidth === this.mapWidth - 1) {
+                // Fix right border closed in room
+                roomWalls.splice(3, 1);
+            } else if (roomWalls.length > 3 && roomIndex > this.mapWidth * (this.mapWidth - 1) - 1) {
+                // Fix bottom border closed in room
+                roomWalls.splice(2, 1);
+            } else if (roomWalls.length > 3) {
+                // Fix closed in room
+                if (this.game.rnd.frac() > 0.5) {
+                    // Remove right wall
+                    roomWalls.splice(2, 1);
+                } else {
+                    // Remove bottom wall
+                    roomWalls.splice(3, 1);
+                }
+            }
+            // Add square walls in all corners
+            roomWalls.push([0, 0, this.colorSquareWall(roomColor)]);
+            roomWalls.push([this.game.world.width - this.WALLTHICKNESS, 0, this.colorSquareWall(roomColor)]);
+            roomWalls.push([this.game.world.width - this.WALLTHICKNESS, this.game.world.height - this.WALLTHICKNESS, this.colorSquareWall(roomColor)]);
+            roomWalls.push([0, this.game.world.height - this.WALLTHICKNESS, this.colorSquareWall(roomColor)]);
+            mapData.push({color: roomColor, walls: roomWalls});
+        }
+        return mapData;
     }
 }

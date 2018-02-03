@@ -8,6 +8,7 @@ class Load extends Phaser.State {
         this.game.load.path = 'src/images/';
         this.game.load.image('button_runner', 'runner_button.png');
         this.game.load.image('button_mapper', 'mapper_button.png');
+        this.game.load.image('button_confirm', 'confirm_button.png');
         this.game.load.image('HUD_indicator_cyan', 'HUD_indicator_cyan.png');
         this.game.load.image('HUD_indicator_green', 'HUD_indicator_green.png');
         this.game.load.image('HUD_indicator_red', 'HUD_indicator_red.png');

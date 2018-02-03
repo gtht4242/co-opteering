@@ -7,27 +7,35 @@ class Menu extends Phaser.State {
         titleText.anchor.setTo(0.5, 0.5);
         titleText.fontSize = 60;
         // Create runner and mapper mode buttons
-        var runnerButton = this.game.add.button(this.game.world.width / 3, (this.game.world.height / 3) * 2, 'button_runner', this.startRunner);
+        var runnerButton = this.game.add.button(this.game.world.width / 3, (this.game.world.height / 3) * 2, 'button_runner', this.startDisplaySeed);
         runnerButton.anchor.setTo(0.5, 0.5);
         runnerButton.alpha = 0.5;
         runnerButton.onInputOver.add(this.fullAlpha, {button: runnerButton});
         runnerButton.onInputOut.add(this.halfAlpha, {button: runnerButton});
-        var mapperButton = this.game.add.button((this.game.world.width / 3) * 2, (this.game.world.height / 3) * 2, 'button_mapper', this.startMapper);
+        var mapperButton = this.game.add.button((this.game.world.width / 3) * 2, (this.game.world.height / 3) * 2, 'button_mapper', this.startEnterSeed);
         mapperButton.anchor.setTo(0.5, 0.5);
         mapperButton.alpha = 0.5;
         mapperButton.onInputOver.add(this.fullAlpha, {button: mapperButton});
         mapperButton.onInputOut.add(this.halfAlpha, {button: mapperButton});
         // Create hotkey shortcuts
         var keyR = this.game.input.keyboard.addKey(Phaser.Keyboard.R);
-        keyR.onDown.add(this.startRunner, this);
+        keyR.onDown.add(this.startDisplaySeed, this);
         this.game.input.keyboard.removeKeyCapture(Phaser.Keyboard.R);
         var keyM = this.game.input.keyboard.addKey(Phaser.Keyboard.M);
-        keyM.onDown.add(this.startMapper, this);
+        keyM.onDown.add(this.startEnterSeed, this);
         this.game.input.keyboard.removeKeyCapture(Phaser.Keyboard.M);
+    }
+    startDisplaySeed() {
+        // Start display seed state
+        this.game.state.start('DisplaySeed');
     }
     startRunner() {
         // Start runner state
         this.game.state.start('Runner');
+    }
+    startEnterSeed() {
+        // Start enter seed state
+        this.game.state.start('EnterSeed');
     }
     startMapper() {
         // Start mapper state
