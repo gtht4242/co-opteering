@@ -29,6 +29,11 @@ class Runner extends Phaser.State {
             'four': Phaser.KeyCode.FOUR
         });
         this.game.input.keyboard.addKeyCapture([Phaser.KeyCode.UP, Phaser.KeyCode.DOWN, Phaser.KeyCode.LEFT, Phaser.KeyCode.RIGHT]);
+        // Add key event callbacks
+        this.keys.one.onDown.add(this.changePlayerColor, {that: this, color: 'cyan'})
+        this.keys.two.onDown.add(this.changePlayerColor, {that: this, color: 'green'})
+        this.keys.three.onDown.add(this.changePlayerColor, {that: this, color: 'red'})
+        this.keys.four.onDown.add(this.changePlayerColor, {that: this, color: 'yellow'})
         // Create walls and hint squares group
         this.walls = this.game.add.group();
         this.walls.enableBody = true;
@@ -65,16 +70,15 @@ class Runner extends Phaser.State {
         // Create objective text
         var objectiveText = this.game.add.text(this.game.world.width - 85, this.game.world.height - 78, this.roomIndexToXY(this.objective.index));
         objectiveText.fontSize = 50;
-        // Create HUD group and color button indicators
-        this.HUD = this.game.add.group();
-        var indicatorCyan = this.HUD.create(20, this.game.world.height - 90, 'HUD_indicator_cyan');
-        var indicatorGreen = this.HUD.create(120, this.game.world.height - 90, 'HUD_indicator_green');
-        var indicatorRed = this.HUD.create(220, this.game.world.height - 90, 'HUD_indicator_red');
-        var indicatorYellow = this.HUD.create(320, this.game.world.height - 90, 'HUD_indicator_yellow');
-        indicatorCyan.alpha = 0.6;
-        indicatorGreen.alpha = 0.6;
-        indicatorRed.alpha = 0.6;
-        indicatorYellow.alpha = 0.6;
+        // Create player color buttons
+        var playerCyanButton = this.game.add.button(20, this.game.world.height - 90, 'HUD_indicator_cyan', this.changePlayerColor, {that: this, color: 'cyan'});
+        var playerGreenButton = this.game.add.button(120, this.game.world.height - 90, 'HUD_indicator_green', this.changePlayerColor, {that: this, color: 'green'});
+        var playerRedButton = this.game.add.button(220, this.game.world.height - 90, 'HUD_indicator_red', this.changePlayerColor, {that: this, color: 'red'});
+        var playerYellowButton = this.game.add.button(320, this.game.world.height - 90, 'HUD_indicator_yellow', this.changePlayerColor, {that: this, color: 'yellow'});
+        playerCyanButton.alpha = 0.6;
+        playerGreenButton.alpha = 0.6;
+        playerRedButton.alpha = 0.6;
+        playerYellowButton.alpha = 0.6;
     }
     update() {
         // Check if all objectives collected then return to menu
@@ -115,20 +119,6 @@ class Runner extends Phaser.State {
         } else if (this.keys.down.isDown || this.keys.s.isDown) {
             this.player.sprite.body.velocity.y += 15;
         }
-        // Detect input then change player color
-        if (this.keys.one.isDown) {
-            this.player.sprite.loadTexture('particle_cyan_square');
-            this.player.color = 'cyan';
-        } else if (this.keys.two.isDown) {
-            this.player.sprite.loadTexture('particle_green_square');
-            this.player.color = 'green';
-        } else if (this.keys.three.isDown) {
-            this.player.sprite.loadTexture('particle_red_square');
-            this.player.color = 'red';
-        } else if (this.keys.four.isDown) {
-            this.player.sprite.loadTexture('particle_yellow_square');
-            this.player.color = 'yellow';
-        }
     }
     startMenu() {
         // Start menu state
@@ -138,6 +128,27 @@ class Runner extends Phaser.State {
         // Return random index in mapData
         this.game.rnd.sow([Math.random()]);
         return this.game.rnd.integerInRange(0, this.mapData.length - 1)
+    }
+    changePlayerColor() {
+        // Changes player texture and attribute to color
+        switch (this.color) {
+            case 'cyan':
+                this.that.player.sprite.loadTexture('particle_cyan_square');
+                this.that.player.color = 'cyan';
+                break;
+            case 'green':
+                this.that.player.sprite.loadTexture('particle_green_square');
+                this.that.player.color = 'green';
+                break;
+            case 'red':
+                this.that.player.sprite.loadTexture('particle_red_square');
+                this.that.player.color = 'red';
+                break;
+            case 'yellow':
+                this.that.player.sprite.loadTexture('particle_yellow_square');
+                this.that.player.color = 'yellow';
+                break;
+        }
     }
     colorHorizontalWall(color) {
         // Return image key for horizontal wall of color
