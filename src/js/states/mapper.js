@@ -2,7 +2,7 @@ class Mapper extends Runner {
     init(seed) {
         // Set passed-in state variables
         this.mapSeed = [seed];
-        console.log(this.mapSeed);
+        console.log('Seed: ' + this.mapSeed);
     }
     create() {
         // Create mapData and other variables

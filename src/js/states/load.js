@@ -9,6 +9,16 @@ class Load extends Phaser.State {
         this.game.load.image('button_runner', 'runner_button.png');
         this.game.load.image('button_mapper', 'mapper_button.png');
         this.game.load.image('button_confirm', 'confirm_button.png');
+        this.game.load.image('button_level_1', 'button_level_1.png');
+        this.game.load.image('button_level_2', 'button_level_2.png');
+        this.game.load.image('button_level_3', 'button_level_3.png');
+        this.game.load.image('button_level_4', 'button_level_4.png');
+        this.game.load.image('button_level_5', 'button_level_5.png');
+        this.game.load.image('button_level_6', 'button_level_6.png');
+        this.game.load.image('button_level_7', 'button_level_7.png');
+        this.game.load.image('button_level_8', 'button_level_8.png');
+        this.game.load.image('button_level_9', 'button_level_9.png');
+        this.game.load.image('button_level_10', 'button_level_10.png');
         this.game.load.image('HUD_indicator_cyan', 'HUD_indicator_cyan.png');
         this.game.load.image('HUD_indicator_green', 'HUD_indicator_green.png');
         this.game.load.image('HUD_indicator_red', 'HUD_indicator_red.png');
@@ -30,6 +40,9 @@ class Load extends Phaser.State {
         this.game.load.image('wall_yellow_vertical', 'NEW_rect_yellow_vert.png');
         this.game.load.image('wall_yellow_square', 'square_yellow.png');
         this.game.load.image('particle_yellow_square', 'small_square_yellow.png');
+        // Load JSON
+        this.game.load.path = 'src/json/';
+        this.game.load.json('level_data', 'level_data.json');
     }
     create () {
         // Start menu state

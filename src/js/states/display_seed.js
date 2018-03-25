@@ -1,4 +1,9 @@
 class DisplaySeed extends Phaser.State {
+    init (level) {
+        // Set passed-in state variables
+        this.level = level;
+        console.log('Level: ' + this.level);
+    }
     create() {
         // Reset world scale
         this.game.world.scale.set(1);
@@ -22,18 +27,18 @@ class DisplaySeed extends Phaser.State {
             'esc': Phaser.KeyCode.ESC,
             'enter': Phaser.KeyCode.ENTER
         });
-        this.keys.esc.onDown.add(this.startMenu, this);
+        this.keys.esc.onDown.add(this.startLevelSelect, this);
         this.keys.enter.onDown.add(this.startRunner, this);
     }
     update() {
     }
-    startMenu() {
-        // Start menu state
-        this.game.state.start('Menu');
+    startLevelSelect() {
+        // Start level select state
+        this.game.state.start('LevelSelect');
     }
     startRunner() {
         // Start runner state
-        this.game.state.start('Runner', true, false, this.mapSeed);
+        this.game.state.start('Runner', true, false, this.mapSeed, this.level);
     }
     fullAlpha() {
         // Set alpha of button to 1

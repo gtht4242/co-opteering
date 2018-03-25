@@ -1,0 +1,42 @@
+{
+    "1": {
+        "objectiveNum": 1,
+        "timeLimit": false
+    },
+    "2": {
+        "objectiveNum": 2,
+        "timeLimit": false
+    },
+    "3": {
+        "objectiveNum": 3,
+        "timeLimit": false
+    },
+    "4": {
+        "objectiveNum": 4,
+        "timeLimit": false
+    },
+    "5": {
+        "objectiveNum": 5,
+        "timeLimit": false
+    },
+    "6": {
+        "objectiveNum": 6,
+        "timeLimit": false
+    },
+    "7": {
+        "objectiveNum": 7,
+        "timeLimit": false
+    },
+    "8": {
+        "objectiveNum": 8,
+        "timeLimit": false
+    },
+    "9": {
+        "objectiveNum": 9,
+        "timeLimit": false
+    },
+    "10": {
+        "objectiveNum": 10,
+        "timeLimit": false
+    }
+}

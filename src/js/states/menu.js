@@ -7,7 +7,7 @@ class Menu extends Phaser.State {
         titleText.anchor.setTo(0.5, 0.5);
         titleText.fontSize = 60;
         // Create runner and mapper mode buttons
-        var runnerButton = this.game.add.button(this.game.world.width / 3, (this.game.world.height / 3) * 2, 'button_runner', this.startDisplaySeed);
+        var runnerButton = this.game.add.button(this.game.world.width / 3, (this.game.world.height / 3) * 2, 'button_runner', this.startLevelSelect);
         runnerButton.anchor.setTo(0.5, 0.5);
         runnerButton.alpha = 0.5;
         runnerButton.onInputOver.add(this.fullAlpha, {button: runnerButton});
@@ -19,11 +19,15 @@ class Menu extends Phaser.State {
         mapperButton.onInputOut.add(this.halfAlpha, {button: mapperButton});
         // Create hotkey shortcuts
         var keyR = this.game.input.keyboard.addKey(Phaser.Keyboard.R);
-        keyR.onDown.add(this.startDisplaySeed, this);
+        keyR.onDown.add(this.startLevelSelect, this);
         this.game.input.keyboard.removeKeyCapture(Phaser.Keyboard.R);
         var keyM = this.game.input.keyboard.addKey(Phaser.Keyboard.M);
         keyM.onDown.add(this.startEnterSeed, this);
         this.game.input.keyboard.removeKeyCapture(Phaser.Keyboard.M);
+    }
+    startLevelSelect() {
+        // Start level select state
+        this.game.state.start('LevelSelect');
     }
     startDisplaySeed() {
         // Start display seed state

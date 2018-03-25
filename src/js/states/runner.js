@@ -1,17 +1,22 @@
 class Runner extends Phaser.State {
-    init(seed) {
+    init(seed, level) {
         // Set passed-in state variables
         this.mapSeed = [seed];
-        console.log(this.mapSeed);
+        this.level = level;
+        console.log('Seed: ' + this.mapSeed);
+        console.log('Level: ' + this.level);
     }
     create() {
         // Reset world scale
         this.game.world.scale.set(1);
+        // Load level data from JSON
+        this.levelData = this.game.cache.getJSON('level_data')[this.level];
         // Create mapData and other variables
         this.WALLTHICKNESS = 100;
         this.colors = ['cyan', 'green', 'red', 'yellow'];
         this.mapWidth = 5; // Must be odd
-        this.objectiveCount = 1;
+        this.objectiveCount = this.levelData.objectiveNum;
+        this.objectiveKilled = false;
         this.mapData = this.generateMap(this.mapSeed);
         // Initialise keys
         this.keys = this.game.input.keyboard.addKeys({
@@ -62,14 +67,15 @@ class Runner extends Phaser.State {
             sprite: this.game.add.sprite(this.game.world.width / 2, this.game.world.height / 2, 'particle_black_square'),
             index: this.randomIndex()
         }
-        while (this.roomIndex === this.objective.index)
-            this.objective.index = this.game.rnd.integerInRange(0, this.mapData.length - 1);
+        while (this.roomIndex === this.objective.index) {
+            this.objective.index = this.randomIndex();
+        }
         this.game.physics.arcade.enable(this.objective.sprite);
         this.objective.sprite.anchor.setTo(0.5, 0.5);
         this.objective.sprite.visible = false;
         // Create objective text
-        var objectiveText = this.game.add.text(this.game.world.width - 85, this.game.world.height - 78, this.roomIndexToXY(this.objective.index));
-        objectiveText.fontSize = 50;
+        this.objectiveText = this.game.add.text(this.game.world.width - 85, this.game.world.height - 78, this.roomIndexToXY(this.objective.index));
+        this.objectiveText.fontSize = 50;
         // Create player color buttons
         var playerCyanButton = this.game.add.button(20, this.game.world.height - 90, 'HUD_indicator_cyan', this.changePlayerColor, {that: this, color: 'cyan'});
         var playerGreenButton = this.game.add.button(120, this.game.world.height - 90, 'HUD_indicator_green', this.changePlayerColor, {that: this, color: 'green'});
@@ -94,7 +100,7 @@ class Runner extends Phaser.State {
             this.wallParticles(this.player.sprite);
         }
         // Check for objective collision
-        if (this.objective.sprite.visible === true) {
+        if (this.objective.sprite.visible === true && !this.objectiveKilled) {
             var hitObjective = this.game.physics.arcade.overlap(this.player.sprite, this.objective.sprite, this.killObjective, null, this);
         }
         // Reduce player velocity
@@ -208,6 +214,14 @@ class Runner extends Phaser.State {
         // Kill objective and decrement objectiveCount
         this.objective.sprite.kill();
         this.objectiveCount--;
+        if (this.objectiveCount > 0) {
+            this.objectiveKilled = true
+            this.objective.index = this.randomIndex();
+            while (this.roomIndex === this.objective.index) {
+                this.objective.index = this.randomIndex();
+            }
+            this.objectiveText.text = this.roomIndexToXY(this.objective.index);
+        }
     }
     getPossibleHints(roomIndex, direction) {
         // Return possible room indexes for hint squares based on direction
@@ -317,6 +331,8 @@ class Runner extends Phaser.State {
         }
         this.walls.forEach(function(child) {child.kill();});
         this.hintSquares.forEach(function(child) {child.kill();});
+        this.objectiveKilled = false;
+        this.objective.sprite.revive();
         this.objective.sprite.visible = false;
         this.loadRoom();
         this.wallEmitter.forEach(function(child) {child.loadTexture(this.colorWallParticles(this.room.color));}, this);
