@@ -87,12 +87,9 @@ class Runner extends Phaser.State {
         playerYellowButton.alpha = 0.6;
     }
     update() {
-        // Check if all objectives collected then return to menu
+        // Check if all objectives collected then start win sequence
         if (this.objectiveCount <= 0) {
-            var winText = this.game.add.text(this.game.world.width / 2, this.game.world.height / 2, 'You win!');
-            winText.anchor.setTo(0.5, 0.5);
-            winText.fontSize = 100;
-            setTimeout(this.startMenu.bind(this), 3000);
+            this.startWin();
         }
         // Check for wall collision
         var hitWall = this.game.physics.arcade.collide(this.player.sprite, this.walls);
@@ -129,6 +126,13 @@ class Runner extends Phaser.State {
     startMenu() {
         // Start menu state
         this.game.state.start('Menu');
+    }
+    startWin() {
+        // Start win sequence
+        var winText = this.game.add.text(this.game.world.width / 2, this.game.world.height / 2, 'You win!');
+        winText.anchor.setTo(0.5, 0.5);
+        winText.fontSize = 100;
+        setTimeout(this.startMenu.bind(this), 3000);
     }
     randomIndex() {
         // Return random index in mapData
