@@ -101,7 +101,7 @@ class Runner extends Phaser.State {
     }
     update() {
         // Update time limit text
-        if (this.timeLimitLength > 0) {
+        if (this.timeLimitLength > 0 && !this.gameEnd) {
             this.timeLimitText.text = this.formatTimeLimit(this.timeLimit.duration);
         }
         // Check if all objectives collected then start win sequence
