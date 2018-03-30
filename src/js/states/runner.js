@@ -87,6 +87,9 @@ class Runner extends Phaser.State {
         playerGreenButton.alpha = 0.6;
         playerRedButton.alpha = 0.6;
         playerYellowButton.alpha = 0.6;
+        // Create objective count text
+        this.objectiveCountText = this.game.add.text(25, 20, this.formatObjectiveCount(this.objectiveCount));
+        this.objectiveCountText.fontSize = 50;
         // Create time limit
         if (this.timeLimitLength > 0) {
             this.timeLimit = this.game.time.create();
@@ -165,6 +168,10 @@ class Runner extends Phaser.State {
         // Return random index in mapData
         this.game.rnd.sow([Math.random()]);
         return this.game.rnd.integerInRange(0, this.mapData.length - 1)
+    }
+    formatObjectiveCount(objectiveCount) {
+        // Return objective count as a formatted string
+        return 'Objectives left: ' + objectiveCount.toString();
     }
     formatTimeLimit(timeLimit) {
         // Return time limit as a string in m:ss format
@@ -264,6 +271,7 @@ class Runner extends Phaser.State {
             }
             this.objectiveText.text = this.roomIndexToXY(this.objective.index);
         }
+        this.objectiveCountText.text = this.formatObjectiveCount(this.objectiveCount);
     }
     getPossibleHints(roomIndex, direction) {
         // Return possible room indexes for hint squares based on direction
