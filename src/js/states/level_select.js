@@ -64,7 +64,6 @@ class LevelSelect extends Phaser.State {
         var keyD = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
         keyD.onDown.add(this.startDisplaySeed, {that: this, level: 'debug'})
     }
-    update() {}
     startMenu() {
         // Start menu state
         this.game.state.start('Menu');

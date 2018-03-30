@@ -30,7 +30,6 @@ class DisplaySeed extends Phaser.State {
         this.keys.esc.onDown.add(this.startLevelSelect, this);
         this.keys.enter.onDown.add(this.startRunner, this);
     }
-    update() {}
     startLevelSelect() {
         // Start level select state
         this.game.state.start('LevelSelect');

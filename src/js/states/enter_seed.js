@@ -66,8 +66,6 @@ class EnterSeed extends Phaser.State {
         this.keys.numEight.onDown.add(this.appendSeed, {that: this, number: '8'});
         this.keys.numNine.onDown.add(this.appendSeed, {that: this, number: '9'});
     }
-    update() {
-    }
     startMenu() {
         // Start menu state
         this.game.state.start('Menu');

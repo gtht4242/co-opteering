@@ -31,8 +31,7 @@ class Mapper extends Runner {
             wallX += 1250;
         }
     }
-    update() {
-    }
+    update() {}
     startEnterSeed() {
         // Start enter seed state
         this.game.state.start('EnterSeed');
