@@ -11,12 +11,14 @@ class Runner extends Phaser.State {
         this.game.world.scale.set(1);
         // Load level data from JSON
         this.levelData = this.game.cache.getJSON('level_data')[this.level];
-        // Create mapData and other variables
+        // Initialise globals
         this.WALLTHICKNESS = 100;
         this.colors = ['cyan', 'green', 'red', 'yellow'];
         this.mapWidth = 5; // Must be odd
         this.objectiveCount = this.levelData.objectiveNum;
         this.objectiveKilled = false;
+        this.timeLimitLength = this.levelData.timeLimit;
+        this.gameEnd = false;
         this.mapData = this.generateMap(this.mapSeed);
         // Initialise keys
         this.keys = this.game.input.keyboard.addKeys({
@@ -85,8 +87,20 @@ class Runner extends Phaser.State {
         playerGreenButton.alpha = 0.6;
         playerRedButton.alpha = 0.6;
         playerYellowButton.alpha = 0.6;
+        // Create time limit
+        if (this.timeLimitLength > 0) {
+            this.timeLimit = this.game.time.create();
+            this.timeLimit.add(Phaser.Timer.SECOND * this.timeLimitLength, this.startLose, this);
+            this.timeLimitText = this.game.add.text(this.game.world.width - 140, 20, this.formatTimeLimit(this.timeLimit.duration));
+            this.timeLimitText.fontSize = 50;
+            this.timeLimit.start();
+        }
     }
     update() {
+        // Update time limit text
+        if (this.timeLimitLength > 0) {
+            this.timeLimitText.text = this.formatTimeLimit(this.timeLimit.duration);
+        }
         // Check if all objectives collected then start win sequence
         if (this.objectiveCount <= 0) {
             this.startWin();
@@ -97,7 +111,7 @@ class Runner extends Phaser.State {
             this.wallParticles(this.player.sprite);
         }
         // Check for objective collision
-        if (this.objective.sprite.visible === true && !this.objectiveKilled) {
+        if (this.objective.sprite.visible === true && !this.objectiveKilled && !this.gameEnd) {
             var hitObjective = this.game.physics.arcade.overlap(this.player.sprite, this.objective.sprite, this.killObjective, null, this);
         }
         // Reduce player velocity
@@ -129,15 +143,39 @@ class Runner extends Phaser.State {
     }
     startWin() {
         // Start win sequence
-        var winText = this.game.add.text(this.game.world.width / 2, this.game.world.height / 2, 'You win!');
-        winText.anchor.setTo(0.5, 0.5);
-        winText.fontSize = 100;
-        setTimeout(this.startMenu.bind(this), 3000);
+        if (!this.gameEnd) {
+            this.gameEnd = true;
+            var winText = this.game.add.text(this.game.world.width / 2, this.game.world.height / 2, 'You win!');
+            winText.anchor.setTo(0.5, 0.5);
+            winText.fontSize = 100;
+            setTimeout(this.startMenu.bind(this), 3000);
+        }
+    }
+    startLose() {
+        // Start lose sequence
+        if (!this.gameEnd) {
+            this.gameEnd = true;
+            var loseText = this.game.add.text(this.game.world.width / 2, this.game.world.height / 2, 'Game over');
+            loseText.anchor.setTo(0.5, 0.5);
+            loseText.fontSize = 100;
+            setTimeout(this.startMenu.bind(this), 3000);
+        }
     }
     randomIndex() {
         // Return random index in mapData
         this.game.rnd.sow([Math.random()]);
         return this.game.rnd.integerInRange(0, this.mapData.length - 1)
+    }
+    formatTimeLimit(timeLimit) {
+        // Return time limit as a string in m:ss format
+        var minutes = Math.floor((timeLimit / 1000) / 60);
+        var seconds = Math.floor((timeLimit / 1000) % 60);
+        if (seconds < 10) {
+            return minutes.toString() + ':0' + seconds.toString();
+        } else {
+            return minutes.toString() + ':' + seconds.toString();
+        }
+
     }
     changePlayerColor() {
         // Changes player texture and attribute to color

@@ -60,6 +60,9 @@ class LevelSelect extends Phaser.State {
         // Create esc hotkey
         var keyEsc = this.game.input.keyboard.addKey(Phaser.Keyboard.ESC);
         keyEsc.onDown.add(this.startMenu, this);
+        // Create debug level hotkey
+        var keyD = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
+        keyD.onDown.add(this.startDisplaySeed, {that: this, level: 'debug'})
     }
     update() {}
     startMenu() {

@@ -1,42 +1,46 @@
 {
+    "debug": {
+        "objectiveNum": 1,
+        "timeLimit": 60
+    },
     "1": {
         "objectiveNum": 1,
-        "timeLimit": false
+        "timeLimit": 0
     },
     "2": {
         "objectiveNum": 2,
-        "timeLimit": false
+        "timeLimit": 60
     },
     "3": {
         "objectiveNum": 3,
-        "timeLimit": false
+        "timeLimit": 120
     },
     "4": {
         "objectiveNum": 4,
-        "timeLimit": false
+        "timeLimit": 120
     },
     "5": {
         "objectiveNum": 5,
-        "timeLimit": false
+        "timeLimit": 180
     },
     "6": {
         "objectiveNum": 6,
-        "timeLimit": false
+        "timeLimit": 180
     },
     "7": {
         "objectiveNum": 7,
-        "timeLimit": false
+        "timeLimit": 240
     },
     "8": {
         "objectiveNum": 8,
-        "timeLimit": false
+        "timeLimit": 240
     },
     "9": {
         "objectiveNum": 9,
-        "timeLimit": false
+        "timeLimit": 300
     },
     "10": {
         "objectiveNum": 10,
-        "timeLimit": false
+        "timeLimit": 660
     }
 }
