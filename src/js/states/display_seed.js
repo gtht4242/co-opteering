@@ -7,15 +7,15 @@ class DisplaySeed extends Phaser.State {
     create() {
         // Reset world scale
         this.game.world.scale.set(1);
-        // Create instruction text
-        this.instructionText = this.game.add.text(this.game.world.width / 2, this.game.world.height / 4, 'Your map code is');
-        this.instructionText.anchor.setTo(0.5, 0.5);
-        this.instructionText.fontSize = 60;
-        // Generate seed and create seed text
+        // Load level data from JSON
+        this.levelData = this.game.cache.getJSON('level_data')[this.level];
+        // Generate seed for map code
         this.mapSeed = Math.floor(Math.random() * 999999);
-        this.seedText = this.game.add.text(this.game.world.width / 2, this.game.world.height / 2, this.mapSeed);
-        this.seedText.anchor.setTo(0.5, 0.5);
-        this.seedText.fontSize = 60;
+        // Create level description text
+        var levelText = this.game.add.text(25, 25, 'Level: ' + this.level.toString(), {fontSize: 50});
+        var objectiveNumText = this.game.add.text(25, 100, 'No. of objectives: ' + this.levelData.objectiveNum.toString(), {fontSize: 50});
+        var timeLimitText = this.game.add.text(25, 175, 'Time limit: ' + this.formatTimeLimit(this.levelData.timeLimit), {fontSize: 50});
+        var mapCodeText = this.game.add.text(25, 250, 'Map code: ' + this.mapSeed.toString(), {fontSize: 50});
         // Create confirm button
         var confirmButton = this.game.add.button(this.game.world.width / 2, (this.game.world.height / 4) * 3, 'button_confirm', this.startRunner, this);
         confirmButton.anchor.setTo(0.5, 0.5);
@@ -30,8 +30,7 @@ class DisplaySeed extends Phaser.State {
         this.keys.esc.onDown.add(this.startLevelSelect, this);
         this.keys.enter.onDown.add(this.startRunner, this);
     }
-    update() {
-    }
+    update() {}
     startLevelSelect() {
         // Start level select state
         this.game.state.start('LevelSelect');
@@ -47,5 +46,17 @@ class DisplaySeed extends Phaser.State {
     halfAlpha() {
         // Set alpha of button to 0.5
         this.button.alpha = 0.5;
+    }
+    formatTimeLimit(timeLimit) {
+        // Return time limit as a string in m:ss format
+        var minutes = Math.floor(timeLimit / 60);
+        var seconds = Math.floor(timeLimit % 60);
+        if (timeLimit === 0) {
+            return 'None';
+        } else if (seconds < 10) {
+            return minutes.toString() + ':0' + seconds.toString();
+        } else {
+            return minutes.toString() + ':' + seconds.toString();
+        }
     }
 }
