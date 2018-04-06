@@ -144,6 +144,10 @@ class Runner extends Phaser.State {
         // Start menu state
         this.game.state.start('Menu');
     }
+    startLevelSelect() {
+        // Start level select state
+        this.game.state.start('LevelSelect');
+    }
     startWin() {
         // Start win sequence
         if (!this.gameEnd) {
@@ -151,7 +155,7 @@ class Runner extends Phaser.State {
             var winText = this.game.add.text(this.game.world.width / 2, this.game.world.height / 2, 'You win!');
             winText.anchor.setTo(0.5, 0.5);
             winText.fontSize = 100;
-            setTimeout(this.startMenu.bind(this), 3000);
+            setTimeout(this.startLevelSelect.bind(this), 3000);
         }
     }
     startLose() {
@@ -161,7 +165,7 @@ class Runner extends Phaser.State {
             var loseText = this.game.add.text(this.game.world.width / 2, this.game.world.height / 2, 'Game over');
             loseText.anchor.setTo(0.5, 0.5);
             loseText.fontSize = 100;
-            setTimeout(this.startMenu.bind(this), 3000);
+            setTimeout(this.startLevelSelect.bind(this), 3000);
         }
     }
     randomIndex() {
@@ -182,7 +186,6 @@ class Runner extends Phaser.State {
         } else {
             return minutes.toString() + ':' + seconds.toString();
         }
-
     }
     changePlayerColor() {
         // Changes player texture and attribute to color
