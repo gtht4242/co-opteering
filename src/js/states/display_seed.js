@@ -18,10 +18,7 @@ class DisplaySeed extends Phaser.State {
         var mapCodeText = this.game.add.text(25, 250, 'Map code: ' + this.mapSeed.toString(), {fontSize: 50});
         // Create confirm button
         var confirmButton = this.game.add.button(this.game.world.width / 2, (this.game.world.height / 4) * 3, 'button_confirm', this.startRunner, this);
-        confirmButton.anchor.setTo(0.5, 0.5);
-        confirmButton.alpha = 0.5;
-        confirmButton.onInputOver.add(this.fullAlpha, {button: confirmButton});
-        confirmButton.onInputOut.add(this.halfAlpha, {button: confirmButton});
+        this.configureButton(confirmButton);
         // Create esc and enter keys
         this.keys = this.game.input.keyboard.addKeys({
             'esc': Phaser.KeyCode.ESC,
@@ -45,6 +42,13 @@ class DisplaySeed extends Phaser.State {
     halfAlpha() {
         // Set alpha of button to 0.5
         this.button.alpha = 0.5;
+    }
+    configureButton(button) {
+        // Set anchor and alpha callbacks of button
+        button.anchor.setTo(0.5, 0.5);
+        button.alpha = 0.5;
+        button.onInputOver.add(this.fullAlpha, {button: button});
+        button.onInputOut.add(this.halfAlpha, {button: button});
     }
     formatTimeLimit(timeLimit) {
         // Return time limit as a string in m:ss format

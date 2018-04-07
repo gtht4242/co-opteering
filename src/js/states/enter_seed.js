@@ -12,10 +12,7 @@ class EnterSeed extends Phaser.State {
         this.seedText.fontSize = 60;
         // Create confirm button
         var confirmButton = this.game.add.button(this.game.world.width / 2, (this.game.world.height / 4) * 3, 'button_confirm', this.startMapper, this);
-        confirmButton.anchor.setTo(0.5, 0.5);
-        confirmButton.alpha = 0.5;
-        confirmButton.onInputOver.add(this.fullAlpha, {button: confirmButton});
-        confirmButton.onInputOut.add(this.halfAlpha, {button: confirmButton});
+        this.configureButton(confirmButton);
         // Create number, numpad, ESC and enter keys
         this.keys = this.game.input.keyboard.addKeys({
             'esc': Phaser.KeyCode.ESC,
@@ -95,5 +92,12 @@ class EnterSeed extends Phaser.State {
     halfAlpha() {
         // Set alpha of button to 0.5
         this.button.alpha = 0.5;
+    }
+    configureButton(button) {
+        // Set anchor and alpha callbacks of button
+        button.anchor.setTo(0.5, 0.5);
+        button.alpha = 0.5;
+        button.onInputOver.add(this.fullAlpha, {button: button});
+        button.onInputOut.add(this.halfAlpha, {button: button});
     }
 }
