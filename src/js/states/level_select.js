@@ -6,7 +6,9 @@ class LevelSelect extends Phaser.State {
         this.levelSelectText = this.game.add.text(this.game.world.width / 2, this.game.world.height / 6, 'Select level');
         this.levelSelectText.anchor.setTo(0.5, 0.5);
         this.levelSelectText.fontSize = 60;
-        // Create level buttons
+        // Create buttons
+        var backButton = this.game.add.button(85, 50, 'button_back', this.startMenu, this);
+        this.configureButton(backButton);
         var level1Button = this.game.add.button(this.game.world.width / 6, (this.game.world.height / 5) * 2, 'button_level_1', this.startDisplaySeed, {that: this, level: 1});
         this.configureButton(level1Button);
         var level2Button = this.game.add.button((this.game.world.width / 6) * 2, (this.game.world.height / 5) * 2, 'button_level_2', this.startDisplaySeed, {that: this, level: 2});

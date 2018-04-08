@@ -1,7 +1,7 @@
 class Help2 extends Phaser.State {
     create() {
         // Create help text and hint square images
-        var rulesText = this.game.add.text(50, 50, 'Collect all the objectives to win.\nThe coordinates of the next objective are displayed in the bottom-right corner.\nYou must be the same colour as the room you are entering. Otherwise, you will be warped to a random room.\n',
+        var rulesText = this.game.add.text(50, 50, ' '.repeat(14) + 'Collect all the objectives to win.\nThe coordinates of the next objective are displayed in the bottom-right corner.\nYou must be the same colour as the room you are entering. Otherwise, you will be warped to a random room.\n',
         {fontSize: 40, wordWrap: true, wordWrapWidth: this.game.world.width - 100});
         var hintSquaresText = this.game.add.text(50, 310, 'The hint squares indicate the surrounding rooms.\ne.g.',
         {fontSize: 40, wordWrap: true, wordWrapWidth: this.game.world.width - 100});
@@ -14,6 +14,8 @@ class Help2 extends Phaser.State {
         hintSquare2.alpha = 0.4;
         hintSquare3.alpha = 0.4;
         // Create buttons
+        var backButton = this.game.add.button(85, 50, 'button_back', this.startMenu, this);
+        this.configureButton(backButton);
         var controlsButton = this.game.add.button(this.game.world.width - 230, this.game.world.height - 100, 'button_controls', this.startHelp, this);
         this.configureButton(controlsButton);
         // Create hotkeys

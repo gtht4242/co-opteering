@@ -10,7 +10,9 @@ class EnterSeed extends Phaser.State {
         this.seedText = this.game.add.text(this.game.world.width / 2, this.game.world.height / 2, '');
         this.seedText.anchor.setTo(0.5, 0.5);
         this.seedText.fontSize = 60;
-        // Create confirm button
+        // Create buttons
+        var backButton = this.game.add.button(85, 50, 'button_back', this.startMenu, this);
+        this.configureButton(backButton);
         var confirmButton = this.game.add.button(this.game.world.width / 2, (this.game.world.height / 4) * 3, 'button_confirm', this.startMapper, this);
         this.configureButton(confirmButton);
         // Create number, numpad, ESC and enter keys

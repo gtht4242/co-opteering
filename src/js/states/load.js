@@ -6,6 +6,7 @@ class Load extends Phaser.State {
         this.game.load.setPreloadSprite(loadingBar);
         // Load images
         this.game.load.path = 'src/images/';
+        this.game.load.image('button_back', 'button_back.png');
         this.game.load.image('button_runner', 'runner_button.png');
         this.game.load.image('button_mapper', 'mapper_button.png');
         this.game.load.image('button_confirm', 'confirm_button.png');

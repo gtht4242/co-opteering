@@ -12,11 +12,11 @@ class DisplaySeed extends Phaser.State {
         // Generate seed for map code
         this.mapSeed = Math.floor(Math.random() * 999999);
         // Create level description text
-        var levelText = this.game.add.text(25, 25, 'Level: ' + this.level.toString(), {fontSize: 50});
-        var objectiveNumText = this.game.add.text(25, 100, 'No. of objectives: ' + this.levelData.objectiveNum.toString(), {fontSize: 50});
-        var timeLimitText = this.game.add.text(25, 175, 'Time limit: ' + this.formatTimeLimit(this.levelData.timeLimit), {fontSize: 50});
-        var mapCodeText = this.game.add.text(25, 250, 'Map code: ' + this.mapSeed.toString(), {fontSize: 50});
-        // Create confirm button
+        var descriptionText = this.game.add.text(25, 100, 'Level: ' + this.level.toString() + '\nNo. of objectives: ' + this.levelData.objectiveNum.toString() + '\nTime limit: ' + this.formatTimeLimit(this.levelData.timeLimit) + '\nMap code: ' + this.mapSeed.toString(),
+        {fontSize: 50});
+        // Create buttons
+        var backButton = this.game.add.button(85, 50, 'button_back', this.startLevelSelect, this);
+        this.configureButton(backButton);
         var confirmButton = this.game.add.button(this.game.world.width / 2, (this.game.world.height / 4) * 3, 'button_confirm', this.startRunner, this);
         this.configureButton(confirmButton);
         // Create esc and enter keys
