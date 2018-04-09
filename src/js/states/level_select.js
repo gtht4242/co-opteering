@@ -1,4 +1,4 @@
-class LevelSelect extends Phaser.State {
+class LevelSelect extends Menu {
     create() {
         // Reset world scale
         this.game.world.scale.set(1);
@@ -36,27 +36,8 @@ class LevelSelect extends Phaser.State {
         var keyD = this.game.input.keyboard.addKey(Phaser.Keyboard.D);
         keyD.onDown.add(this.startDisplaySeed, {that: this, level: 'debug'})
     }
-    startMenu() {
-        // Start menu state
-        this.game.state.start('Menu');
-    }
     startDisplaySeed() {
         // Start display seed state
         this.that.game.state.start('DisplaySeed', true, false, this.level);
-    }
-    fullAlpha() {
-        // Set alpha of button to 1
-        this.button.alpha = 1;
-    }
-    halfAlpha() {
-        // Set alpha of button to 0.5
-        this.button.alpha = 0.5;
-    }
-    configureButton(button) {
-        // Set anchor and alpha callbacks of button
-        button.anchor.setTo(0.5, 0.5);
-        button.alpha = 0.5;
-        button.onInputOver.add(this.fullAlpha, {button: button});
-        button.onInputOut.add(this.halfAlpha, {button: button});
     }
 }

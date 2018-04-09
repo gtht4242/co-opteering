@@ -24,9 +24,17 @@ class Menu extends Phaser.State {
         keyH.onDown.add(this.startHelp, this);
         this.game.input.keyboard.removeKeyCapture(Phaser.Keyboard.H);
     }
+    startMenu() {
+        // Start menu state
+        this.game.state.start('Menu');
+    }
     startHelp() {
         // Start help state
         this.game.state.start('Help');
+    }
+    startHelp2() {
+        // Start help2 state
+        this.game.state.start('Help2');
     }
     startLevelSelect() {
         // Start level select state

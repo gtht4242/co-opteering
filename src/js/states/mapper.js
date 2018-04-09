@@ -37,23 +37,4 @@ class Mapper extends Runner {
         this.configureButton(backButton);
     }
     update() {}
-    startEnterSeed() {
-        // Start enter seed state
-        this.game.state.start('EnterSeed');
-    }
-    fullAlpha(button) {
-        // Set alpha of button to 1
-        button.alpha = 1;
-    }
-    halfAlpha(button) {
-        // Set alpha of button to 0.5
-        button.alpha = 0.5;
-    }
-    configureButton(button) {
-        // Set anchor and alpha callbacks of button
-        button.anchor.setTo(0.5, 0.5);
-        button.alpha = 0.5;
-        button.onInputOver.add(this.fullAlpha, {button: button});
-        button.onInputOut.add(this.halfAlpha, {button: button});
-    }
 }

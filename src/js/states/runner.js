@@ -1,4 +1,4 @@
-class Runner extends Phaser.State {
+class Runner extends Menu {
     init(seed, level) {
         // Set passed-in state variables
         this.mapSeed = [seed];
@@ -139,14 +139,6 @@ class Runner extends Phaser.State {
         } else if (this.keys.down.isDown || this.keys.s.isDown) {
             this.player.sprite.body.velocity.y += 15;
         }
-    }
-    startMenu() {
-        // Start menu state
-        this.game.state.start('Menu');
-    }
-    startLevelSelect() {
-        // Start level select state
-        this.game.state.start('LevelSelect');
     }
     startWin() {
         // Start win sequence

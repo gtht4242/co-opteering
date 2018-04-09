@@ -1,4 +1,4 @@
-class Help extends Phaser.State {
+class Help extends Menu {
     create() {
         // Create help text
         var overviewText = this.game.add.text(200, 50, 'A 2-player co-op navigation game.',
@@ -15,28 +15,5 @@ class Help extends Phaser.State {
         // Create hotkeys
         var keyEsc = this.game.input.keyboard.addKey(Phaser.Keyboard.ESC);
         keyEsc.onDown.add(this.startMenu, this);
-    }
-    startMenu() {
-        // Start menu state
-        this.game.state.start('Menu');
-    }
-    startHelp2() {
-        // Start help2 state
-        this.game.state.start('Help2');
-    }
-    fullAlpha(button) {
-        // Set alpha of button to 1
-        button.alpha = 1;
-    }
-    halfAlpha(button) {
-        // Set alpha of button to 0.5
-        button.alpha = 0.5;
-    }
-    configureButton(button) {
-        // Set anchor and alpha callbacks of button
-        button.anchor.setTo(0.5, 0.5);
-        button.alpha = 0.5;
-        button.onInputOver.add(this.fullAlpha, {button: button});
-        button.onInputOut.add(this.halfAlpha, {button: button});
     }
 }

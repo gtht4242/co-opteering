@@ -1,4 +1,4 @@
-class DisplaySeed extends Phaser.State {
+class DisplaySeed extends Menu {
     init (level) {
         // Set passed-in state variables
         this.level = level;
@@ -27,28 +27,9 @@ class DisplaySeed extends Phaser.State {
         this.keys.esc.onDown.add(this.startLevelSelect, this);
         this.keys.enter.onDown.add(this.startRunner, this);
     }
-    startLevelSelect() {
-        // Start level select state
-        this.game.state.start('LevelSelect');
-    }
     startRunner() {
         // Start runner state
         this.game.state.start('Runner', true, false, this.mapSeed, this.level);
-    }
-    fullAlpha() {
-        // Set alpha of button to 1
-        this.button.alpha = 1;
-    }
-    halfAlpha() {
-        // Set alpha of button to 0.5
-        this.button.alpha = 0.5;
-    }
-    configureButton(button) {
-        // Set anchor and alpha callbacks of button
-        button.anchor.setTo(0.5, 0.5);
-        button.alpha = 0.5;
-        button.onInputOver.add(this.fullAlpha, {button: button});
-        button.onInputOut.add(this.halfAlpha, {button: button});
     }
     formatTimeLimit(timeLimit) {
         // Return time limit as a string in m:ss format

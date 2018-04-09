@@ -1,4 +1,4 @@
-class Help2 extends Phaser.State {
+class Help2 extends Menu {
     create() {
         // Create help text and hint square images
         var rulesText = this.game.add.text(50, 50, ' '.repeat(14) + 'Collect all the objectives to win.\nThe coordinates of the next objective are displayed in the bottom-right corner.\nYou must be the same colour as the room you are entering. Otherwise, you will be warped to a random room.\n',
@@ -21,28 +21,5 @@ class Help2 extends Phaser.State {
         // Create hotkeys
         var keyEsc = this.game.input.keyboard.addKey(Phaser.Keyboard.ESC);
         keyEsc.onDown.add(this.startMenu, this);
-    }
-    startMenu() {
-        // Start menu state
-        this.game.state.start('Menu');
-    }
-    startHelp() {
-        // Start help state
-        this.game.state.start('Help');
-    }
-    fullAlpha(button) {
-        // Set alpha of button to 1
-        button.alpha = 1;
-    }
-    halfAlpha(button) {
-        // Set alpha of button to 0.5
-        button.alpha = 0.5;
-    }
-    configureButton(button) {
-        // Set anchor and alpha callbacks of button
-        button.anchor.setTo(0.5, 0.5);
-        button.alpha = 0.5;
-        button.onInputOver.add(this.fullAlpha, {button: button});
-        button.onInputOut.add(this.halfAlpha, {button: button});
     }
 }
