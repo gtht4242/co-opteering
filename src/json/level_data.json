@@ -8,39 +8,39 @@
         "timeLimit": 0
     },
     "2": {
-        "objectiveNum": 2,
+        "objectiveNum": 1,
         "timeLimit": 60
     },
     "3": {
-        "objectiveNum": 3,
-        "timeLimit": 120
+        "objectiveNum": 1,
+        "timeLimit": 30
     },
     "4": {
-        "objectiveNum": 4,
-        "timeLimit": 120
+        "objectiveNum": 2,
+        "timeLimit": 60
     },
     "5": {
-        "objectiveNum": 5,
-        "timeLimit": 180
+        "objectiveNum": 3,
+        "timeLimit": 60
     },
     "6": {
-        "objectiveNum": 6,
-        "timeLimit": 180
+        "objectiveNum": 4,
+        "timeLimit": 80
     },
     "7": {
-        "objectiveNum": 7,
-        "timeLimit": 240
+        "objectiveNum": 4,
+        "timeLimit": 60
     },
     "8": {
-        "objectiveNum": 8,
-        "timeLimit": 240
+        "objectiveNum": 5,
+        "timeLimit": 70
     },
     "9": {
-        "objectiveNum": 9,
-        "timeLimit": 300
+        "objectiveNum": 6,
+        "timeLimit": 80
     },
     "10": {
-        "objectiveNum": 10,
-        "timeLimit": 660
+        "objectiveNum": 7,
+        "timeLimit": 90
     }
 }
