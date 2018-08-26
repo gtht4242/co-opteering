@@ -65,7 +65,7 @@ class Runner extends Menu {
         this.player.sprite.body.maxVelocity.x = 400;
         this.player.sprite.body.maxVelocity.y = 400;
         this.player.sprite.checkWorldBounds = true;
-        this.player.sprite.events.onOutOfBounds.add(this.roomChange, this);
+        this.player.sprite.events.onOutOfBounds.add(this.changeRoom, this);
         this.walkCyanAnimation = this.player.sprite.animations.add('walk_cyan', [0, 4]);
         this.walkGreenAnimation = this.player.sprite.animations.add('walk_green', [1, 5]);
         this.walkRedAnimation = this.player.sprite.animations.add('walk_red', [2, 6]);
@@ -117,7 +117,7 @@ class Runner extends Menu {
         // Check for wall collision
         var hitWall = this.game.physics.arcade.collide(this.player.sprite, this.walls);
         if (hitWall) {
-            this.wallParticles(this.player.sprite);
+            this.emitWallParticles(this.player.sprite);
         }
         // Check for objective collision
         if (this.objective.sprite.visible === true && !this.objectiveKilled && !this.gameEnd) {
@@ -319,7 +319,7 @@ class Runner extends Menu {
             return 'particle_yellow_square';
         }
     }
-    wallParticles(player) {
+    emitWallParticles(player) {
         // Emit wall particles at player location
         this.wallEmitter.x = player.body.x;
         this.wallEmitter.y = player.body.y;
@@ -418,7 +418,7 @@ class Runner extends Menu {
             this.createHintSquares(this.roomIndex, 132, 207, 'left');
         }
     }
-    roomChange() {
+    changeRoom() {
         // Change roomIndex based on player color, kill old room and then load new room
         var currentRoom = this.roomIndex;
         var newRoom = this.roomIndex;
