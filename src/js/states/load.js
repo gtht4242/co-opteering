@@ -4,6 +4,9 @@ class Load extends Phaser.State {
         var loadingBar = this.game.add.sprite(this.game.world.width / 2, this.game.world.height / 2, 'loading_bar');
         loadingBar.anchor.setTo(0.5, 0.5);
         this.game.load.setPreloadSprite(loadingBar);
+        // Load spritesheets
+        this.game.load.path = 'src/';
+        this.game.load.atlasJSONHash('chameleon_spritesheet', 'images/spritesheet.png', 'json/sprites.json');
         // Load images
         this.game.load.path = 'src/images/';
         this.game.load.image('button_back', 'button_back.png');

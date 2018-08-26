@@ -53,17 +53,23 @@ class Runner extends Menu {
         this.wallEmitter.makeParticles(this.colorWallParticles(this.room.color));
         this.wallEmitter.gravity = 0;
         this.wallEmitter.setAlpha(0.4, 0.6);
-        // Create player object and set variables
+        // Create player object and animations
         this.player = {
-            sprite: this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, this.colorWallParticles(this.room.color)),
+            sprite: this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'chameleon_spritesheet', this.colorChameleonRight(this.room.color)),
             color: this.room.color
         };
         this.game.physics.arcade.enable(this.player.sprite);
         this.player.sprite.anchor.setTo(0.5, 0.5);
+        this.player.sprite.height = 125;
+        this.player.sprite.width = 70;
         this.player.sprite.body.maxVelocity.x = 400;
         this.player.sprite.body.maxVelocity.y = 400;
         this.player.sprite.checkWorldBounds = true;
         this.player.sprite.events.onOutOfBounds.add(this.roomChange, this);
+        this.walkCyanAnimation = this.player.sprite.animations.add('walk_cyan', [0, 4]);
+        this.walkGreenAnimation = this.player.sprite.animations.add('walk_green', [1, 5]);
+        this.walkRedAnimation = this.player.sprite.animations.add('walk_red', [2, 6]);
+        this.walkYellowAnimation = this.player.sprite.animations.add('walk_yellow', [3, 7]);
         // Create objective sprite and randomise location
         this.objective = {
             sprite: this.game.add.sprite(this.game.world.width / 2, this.game.world.height / 2, 'particle_black_square'),
@@ -139,6 +145,14 @@ class Runner extends Menu {
         } else if (this.keys.down.isDown || this.keys.s.isDown) {
             this.player.sprite.body.velocity.y += 15;
         }
+        // Stop all animations if velocity is zero
+        if (this.player.sprite.body.velocity.x === 0 && this.player.sprite.body.velocity.y === 0) {
+            this.player.sprite.animations.stop();
+        }
+        // Play animation if velocity is greater than zero
+        if (this.player.sprite.body.velocity.x !== 0 || this.player.sprite.body.velocity.y !== 0) {
+            this.player.sprite.animations.play(this.colorAnimationWalk(this.player.color), 10, true);
+        }
     }
     startWin() {
         // Start win sequence
@@ -180,24 +194,81 @@ class Runner extends Menu {
         }
     }
     changePlayerColor() {
-        // Changes player texture and attribute to color
-        switch (this.color) {
-            case 'cyan':
-                this.that.player.sprite.loadTexture('particle_cyan_square');
-                this.that.player.color = 'cyan';
-                break;
-            case 'green':
-                this.that.player.sprite.loadTexture('particle_green_square');
-                this.that.player.color = 'green';
-                break;
-            case 'red':
-                this.that.player.sprite.loadTexture('particle_red_square');
-                this.that.player.color = 'red';
-                break;
-            case 'yellow':
-                this.that.player.sprite.loadTexture('particle_yellow_square');
-                this.that.player.color = 'yellow';
-                break;
+        // Changes player texture and attribute to color based on left or right pose
+        if (this.that.player.sprite.frameName.slice(10, 14) === 'left') {
+            switch (this.color) {
+                case 'cyan':
+                    this.that.player.sprite.loadTexture('chameleon_spritesheet', this.that.colorChameleonLeft(this.color));
+                    this.that.player.color = 'cyan';
+                    break;
+                case 'green':
+                    this.that.player.sprite.loadTexture('chameleon_spritesheet', this.that.colorChameleonLeft(this.color));
+                    this.that.player.color = 'green';
+                    break;
+                case 'red':
+                    this.that.player.sprite.loadTexture('chameleon_spritesheet', this.that.colorChameleonLeft(this.color));
+                    this.that.player.color = 'red';
+                    break;
+                case 'yellow':
+                    this.that.player.sprite.loadTexture('chameleon_spritesheet', this.that.colorChameleonLeft(this.color));
+                    this.that.player.color = 'yellow';
+                    break;
+            }
+        } else if (this.that.player.sprite.frameName.slice(10, 15) === 'right') {
+            switch (this.color) {
+                case 'cyan':
+                    this.that.player.sprite.loadTexture('chameleon_spritesheet', this.that.colorChameleonRight(this.color));
+                    this.that.player.color = 'cyan';
+                    break;
+                case 'green':
+                    this.that.player.sprite.loadTexture('chameleon_spritesheet', this.that.colorChameleonRight(this.color));
+                    this.that.player.color = 'green';
+                    break;
+                case 'red':
+                    this.that.player.sprite.loadTexture('chameleon_spritesheet', this.that.colorChameleonRight(this.color));
+                    this.that.player.color = 'red';
+                    break;
+                case 'yellow':
+                    this.that.player.sprite.loadTexture('chameleon_spritesheet', this.that.colorChameleonRight(this.color));
+                    this.that.player.color = 'yellow';
+                    break;
+            }
+        }
+    }
+    colorChameleonLeft(color) {
+        // Return frame_index for chameleon_left of color
+        if (color === 'cyan') {
+            return 'chameleon_left_cyan';
+        } else if (color === 'green') {
+            return 'chameleon_left_green';
+        } else if (color === 'red') {
+            return 'chameleon_left_red';
+        } else if (color === 'yellow') {
+            return 'chameleon_left_yellow';
+        }
+    }
+    colorChameleonRight(color) {
+        // Return frame_index for chameleon_right of color
+        if (color === 'cyan') {
+            return 'chameleon_right_cyan';
+        } else if (color === 'green') {
+            return 'chameleon_right_green';
+        } else if (color === 'red') {
+            return 'chameleon_right_red';
+        } else if (color === 'yellow') {
+            return 'chameleon_right_yellow';
+        }
+    }
+    colorAnimationWalk(color) {
+        // Return key for walk animation of color
+        if (color === 'cyan') {
+            return 'walk_cyan';
+        } else if (color === 'green') {
+            return 'walk_green';
+        } else if (color === 'red') {
+            return 'walk_red';
+        } else if (color === 'yellow') {
+            return 'walk_yellow';
         }
     }
     colorHorizontalWall(color) {
