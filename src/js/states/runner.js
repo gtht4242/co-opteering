@@ -37,6 +37,14 @@ class Runner extends Menu {
         });
         this.game.input.keyboard.addKeyCapture([Phaser.KeyCode.UP, Phaser.KeyCode.DOWN, Phaser.KeyCode.LEFT, Phaser.KeyCode.RIGHT]);
         // Add key event callbacks
+        this.keys.up.onDown.add(this.changePlayerOrient, {that: this, orient: 'up'})
+        this.keys.down.onDown.add(this.changePlayerOrient, {that: this, orient: 'down'})
+        this.keys.left.onDown.add(this.changePlayerOrient, {that: this, orient: 'left'})
+        this.keys.right.onDown.add(this.changePlayerOrient, {that: this, orient: 'right'})
+        this.keys.w.onDown.add(this.changePlayerOrient, {that: this, orient: 'up'})
+        this.keys.s.onDown.add(this.changePlayerOrient, {that: this, orient: 'down'})
+        this.keys.a.onDown.add(this.changePlayerOrient, {that: this, orient: 'left'})
+        this.keys.d.onDown.add(this.changePlayerOrient, {that: this, orient: 'right'})
         this.keys.one.onDown.add(this.changePlayerColor, {that: this, color: 'cyan'})
         this.keys.two.onDown.add(this.changePlayerColor, {that: this, color: 'green'})
         this.keys.three.onDown.add(this.changePlayerColor, {that: this, color: 'red'})
@@ -55,21 +63,14 @@ class Runner extends Menu {
         this.wallEmitter.setAlpha(0.4, 0.6);
         // Create player object and animations
         this.player = {
-            sprite: this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'chameleon_spritesheet', this.colorChameleonRight(this.room.color)),
+            spriteVert: this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'chameleon_spritesheet', this.colorChameleonVert(this.room.color)),
+            spriteHori: this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'chameleon_spritesheet', this.colorChameleonHori(this.room.color)),
             color: this.room.color
         };
-        this.game.physics.arcade.enable(this.player.sprite);
-        this.player.sprite.anchor.setTo(0.5, 0.5);
-        this.player.sprite.height = 125;
-        this.player.sprite.width = 70;
-        this.player.sprite.body.maxVelocity.x = 400;
-        this.player.sprite.body.maxVelocity.y = 400;
-        this.player.sprite.checkWorldBounds = true;
-        this.player.sprite.events.onOutOfBounds.add(this.changeRoom, this);
-        this.walkCyanAnimation = this.player.sprite.animations.add('walk_cyan', [0, 4]);
-        this.walkGreenAnimation = this.player.sprite.animations.add('walk_green', [1, 5]);
-        this.walkRedAnimation = this.player.sprite.animations.add('walk_red', [2, 6]);
-        this.walkYellowAnimation = this.player.sprite.animations.add('walk_yellow', [3, 7]);
+        this.initSpritePlayer(this.player.spriteVert, 'vertical');
+        this.initSpritePlayer(this.player.spriteHori, 'horizontal');
+        this.player.spriteCurrent = this.player.spriteVert;
+        this.player.spriteHori.kill();
         // Create objective sprite and randomise location
         this.objective = {
             sprite: this.game.add.sprite(this.game.world.width / 2, this.game.world.height / 2, 'particle_black_square'),
@@ -115,43 +116,56 @@ class Runner extends Menu {
             this.startWin();
         }
         // Check for wall collision
-        var hitWall = this.game.physics.arcade.collide(this.player.sprite, this.walls);
+        var hitWall = this.game.physics.arcade.collide(this.player.spriteCurrent, this.walls);
         if (hitWall) {
-            this.emitWallParticles(this.player.sprite);
+            this.emitWallParticles(this.player.spriteCurrent);
         }
-        // Check for objective collision
+        // Check for wall overlap and reposition the player in bounds
+        var overlapWall = this.game.physics.arcade.overlap(this.player.spriteCurrent, this.walls);
+        if (overlapWall) {
+            if (this.player.spriteCurrent.body.x < this.WALLTHICKNESS) {
+                this.player.spriteCurrent.body.x = this.WALLTHICKNESS;
+            } else if (this.player.spriteCurrent.body.x > this.game.world.width - this.WALLTHICKNESS - this.player.spriteCurrent.width) {
+                this.player.spriteCurrent.body.x = this.game.world.width - this.WALLTHICKNESS - this.player.spriteCurrent.width;
+            } else if (this.player.spriteCurrent.body.y < this.WALLTHICKNESS) {
+                this.player.spriteCurrent.body.y = this.WALLTHICKNESS;
+            } else if (this.player.spriteCurrent.body.y > this.game.world.height - this.WALLTHICKNESS - this.player.spriteCurrent.height) {
+                this.player.spriteCurrent.body.y = this.game.world.height - this.WALLTHICKNESS - this.player.spriteCurrent.height;
+            }
+        }
+        // Check for objective overlap and kill it
         if (this.objective.sprite.visible === true && !this.objectiveKilled && !this.gameEnd) {
-            var hitObjective = this.game.physics.arcade.overlap(this.player.sprite, this.objective.sprite, this.killObjective, null, this);
+            var hitObjective = this.game.physics.arcade.overlap(this.player.spriteCurrent, this.objective.sprite, this.killObjective, null, this);
         }
         // Reduce player velocity
-        if (this.player.sprite.body.velocity.x > 0) {
-            this.player.sprite.body.velocity.x -= 5;
-        } else if (this.player.sprite.body.velocity.x < 0) {
-            this.player.sprite.body.velocity.x += 5;
+        if (this.player.spriteCurrent.body.velocity.x > 0) {
+            this.player.spriteCurrent.body.velocity.x -= 5;
+        } else if (this.player.spriteCurrent.body.velocity.x < 0) {
+            this.player.spriteCurrent.body.velocity.x += 5;
         }
-        if (this.player.sprite.body.velocity.y > 0) {
-            this.player.sprite.body.velocity.y -= 5;
-        } else if (this.player.sprite.body.velocity.y < 0) {
-            this.player.sprite.body.velocity.y += 5;
+        if (this.player.spriteCurrent.body.velocity.y > 0) {
+            this.player.spriteCurrent.body.velocity.y -= 5;
+        } else if (this.player.spriteCurrent.body.velocity.y < 0) {
+            this.player.spriteCurrent.body.velocity.y += 5;
         }
         // Detect input then increase player velocity
         if (this.keys.right.isDown || this.keys.d.isDown) {
-            this.player.sprite.body.velocity.x += 15;
+            this.player.spriteCurrent.body.velocity.x += 15;
         } else if (this.keys.left.isDown || this.keys.a.isDown) {
-            this.player.sprite.body.velocity.x -= 15;
+            this.player.spriteCurrent.body.velocity.x -= 15;
         }
         if (this.keys.up.isDown || this.keys.w.isDown) {
-            this.player.sprite.body.velocity.y -= 15;
+            this.player.spriteCurrent.body.velocity.y -= 15;
         } else if (this.keys.down.isDown || this.keys.s.isDown) {
-            this.player.sprite.body.velocity.y += 15;
+            this.player.spriteCurrent.body.velocity.y += 15;
         }
         // Stop all animations if velocity is zero
-        if (this.player.sprite.body.velocity.x === 0 && this.player.sprite.body.velocity.y === 0) {
-            this.player.sprite.animations.stop();
+        if (this.player.spriteCurrent.body.velocity.x === 0 && this.player.spriteCurrent.body.velocity.y === 0) {
+            this.player.spriteCurrent.animations.stop();
         }
         // Play animation if velocity is greater than zero
-        if (this.player.sprite.body.velocity.x !== 0 || this.player.sprite.body.velocity.y !== 0) {
-            this.player.sprite.animations.play(this.colorAnimationWalk(this.player.color), 10, true);
+        if (this.player.spriteCurrent.body.velocity.x !== 0 || this.player.spriteCurrent.body.velocity.y !== 0) {
+            this.player.spriteCurrent.animations.play(this.colorAnimationWalk(this.player.color), 10, true);
         }
     }
     startWin() {
@@ -174,6 +188,36 @@ class Runner extends Menu {
             setTimeout(this.startLevelSelect.bind(this), 3000);
         }
     }
+    initSpritePlayer(sprite, type) {
+        // Sets variables for player sprite
+        if (type === 'vertical') {
+            this.game.physics.arcade.enable(sprite);
+            sprite.anchor.setTo(0.5, 0.5);
+            sprite.height = 125;
+            sprite.width = 70;
+            sprite.body.maxVelocity.x = 400;
+            sprite.body.maxVelocity.y = 400;
+            sprite.checkWorldBounds = true;
+            sprite.events.onOutOfBounds.add(this.changeRoom, this);
+            this.walkCyanAnimation = sprite.animations.add('walk_cyan', ['chameleon_left_cyan_vert', 'chameleon_right_cyan_vert']);
+            this.walkGreenAnimation = sprite.animations.add('walk_green', ['chameleon_left_green_vert', 'chameleon_right_green_vert']);
+            this.walkRedAnimation = sprite.animations.add('walk_red', ['chameleon_left_red_vert', 'chameleon_right_red_vert']);
+            this.walkYellowAnimation = sprite.animations.add('walk_yellow', ['chameleon_left_yellow_vert', 'chameleon_right_yellow_vert']);
+        } else if (type === 'horizontal') {
+            this.game.physics.arcade.enable(sprite);
+            sprite.anchor.setTo(0.5, 0.5);
+            sprite.height = 70;
+            sprite.width = 125;
+            sprite.body.maxVelocity.x = 400;
+            sprite.body.maxVelocity.y = 400;
+            sprite.checkWorldBounds = true;
+            sprite.events.onOutOfBounds.add(this.changeRoom, this);
+            this.walkCyanAnimation = sprite.animations.add('walk_cyan', ['chameleon_left_cyan_hori', 'chameleon_right_cyan_hori']);
+            this.walkGreenAnimation = sprite.animations.add('walk_green', ['chameleon_left_green_hori', 'chameleon_right_green_hori']);
+            this.walkRedAnimation = sprite.animations.add('walk_red', ['chameleon_left_red_hori', 'chameleon_right_red_hori']);
+            this.walkYellowAnimation = sprite.animations.add('walk_yellow', ['chameleon_left_yellow_hori', 'chameleon_right_yellow_hori']);
+        }
+    }
     randomIndex() {
         // Return random index in mapData
         this.game.rnd.sow([Math.random()]);
@@ -193,70 +237,163 @@ class Runner extends Menu {
             return minutes.toString() + ':' + seconds.toString();
         }
     }
+    changePlayerOrient() {
+        // Changes player sprite and rotation to orient
+        switch (this.orient) {
+            case 'up':
+                this.that.player.spriteHori.kill();
+                this.that.player.spriteVert.revive();
+                this.that.player.spriteVert.body.velocity.x = this.that.player.spriteCurrent.body.velocity.x;
+                this.that.player.spriteVert.body.velocity.y = this.that.player.spriteCurrent.body.velocity.y;
+                this.that.player.spriteVert.x = this.that.player.spriteCurrent.x;
+                this.that.player.spriteVert.y = this.that.player.spriteCurrent.y;
+                this.that.player.spriteVert.angle = 0;
+                this.that.player.spriteCurrent = this.that.player.spriteVert;
+                break;
+            case 'down':
+                this.that.player.spriteHori.kill();
+                this.that.player.spriteVert.revive();
+                this.that.player.spriteVert.body.velocity.x = this.that.player.spriteCurrent.body.velocity.x;
+                this.that.player.spriteVert.body.velocity.y = this.that.player.spriteCurrent.body.velocity.y;
+                this.that.player.spriteVert.x = this.that.player.spriteCurrent.x;
+                this.that.player.spriteVert.y = this.that.player.spriteCurrent.y;
+                this.that.player.spriteVert.angle = 180;
+                this.that.player.spriteCurrent = this.that.player.spriteVert;
+                break;
+            case 'left':
+                this.that.player.spriteVert.kill();
+                this.that.player.spriteHori.revive();
+                this.that.player.spriteHori.body.velocity.x = this.that.player.spriteCurrent.body.velocity.x;
+                this.that.player.spriteHori.body.velocity.y = this.that.player.spriteCurrent.body.velocity.y;
+                this.that.player.spriteHori.x = this.that.player.spriteCurrent.x;
+                this.that.player.spriteHori.y = this.that.player.spriteCurrent.y;
+                this.that.player.spriteHori.angle = 180;
+                this.that.player.spriteCurrent = this.that.player.spriteHori;
+                break;
+            case 'right':
+                this.that.player.spriteVert.kill();
+                this.that.player.spriteHori.revive();
+                this.that.player.spriteHori.body.velocity.x = this.that.player.spriteCurrent.body.velocity.x;
+                this.that.player.spriteHori.body.velocity.y = this.that.player.spriteCurrent.body.velocity.y;
+                this.that.player.spriteHori.x = this.that.player.spriteCurrent.x;
+                this.that.player.spriteHori.y = this.that.player.spriteCurrent.y;
+                this.that.player.spriteHori.angle = 0;
+                this.that.player.spriteCurrent = this.that.player.spriteHori;
+                break;
+        }
+    }
     changePlayerColor() {
         // Changes player texture and attribute to color based on left or right pose
-        if (this.that.player.sprite.frameName.slice(10, 14) === 'left') {
+        if (this.that.player.spriteCurrent.frameName.slice(10, 14) === 'left') {
             switch (this.color) {
                 case 'cyan':
-                    this.that.player.sprite.loadTexture('chameleon_spritesheet', this.that.colorChameleonLeft(this.color));
+                    this.that.player.spriteCurrent.loadTexture('chameleon_spritesheet', this.that.colorChameleonLeft(this.color));
                     this.that.player.color = 'cyan';
                     break;
                 case 'green':
-                    this.that.player.sprite.loadTexture('chameleon_spritesheet', this.that.colorChameleonLeft(this.color));
+                    this.that.player.spriteCurrent.loadTexture('chameleon_spritesheet', this.that.colorChameleonLeft(this.color));
                     this.that.player.color = 'green';
                     break;
                 case 'red':
-                    this.that.player.sprite.loadTexture('chameleon_spritesheet', this.that.colorChameleonLeft(this.color));
+                    this.that.player.spriteCurrent.loadTexture('chameleon_spritesheet', this.that.colorChameleonLeft(this.color));
                     this.that.player.color = 'red';
                     break;
                 case 'yellow':
-                    this.that.player.sprite.loadTexture('chameleon_spritesheet', this.that.colorChameleonLeft(this.color));
+                    this.that.player.spriteCurrent.loadTexture('chameleon_spritesheet', this.that.colorChameleonLeft(this.color));
                     this.that.player.color = 'yellow';
                     break;
             }
-        } else if (this.that.player.sprite.frameName.slice(10, 15) === 'right') {
+        } else if (this.that.player.spriteCurrent.frameName.slice(10, 15) === 'right') {
             switch (this.color) {
                 case 'cyan':
-                    this.that.player.sprite.loadTexture('chameleon_spritesheet', this.that.colorChameleonRight(this.color));
+                    this.that.player.spriteCurrent.loadTexture('chameleon_spritesheet', this.that.colorChameleonRight(this.color));
                     this.that.player.color = 'cyan';
                     break;
                 case 'green':
-                    this.that.player.sprite.loadTexture('chameleon_spritesheet', this.that.colorChameleonRight(this.color));
+                    this.that.player.spriteCurrent.loadTexture('chameleon_spritesheet', this.that.colorChameleonRight(this.color));
                     this.that.player.color = 'green';
                     break;
                 case 'red':
-                    this.that.player.sprite.loadTexture('chameleon_spritesheet', this.that.colorChameleonRight(this.color));
+                    this.that.player.spriteCurrent.loadTexture('chameleon_spritesheet', this.that.colorChameleonRight(this.color));
                     this.that.player.color = 'red';
                     break;
                 case 'yellow':
-                    this.that.player.sprite.loadTexture('chameleon_spritesheet', this.that.colorChameleonRight(this.color));
+                    this.that.player.spriteCurrent.loadTexture('chameleon_spritesheet', this.that.colorChameleonRight(this.color));
                     this.that.player.color = 'yellow';
                     break;
             }
+        }
+    }
+    colorChameleonHori(color) {
+        // Return frame_index for chameleon_hori of color
+        if (color === 'cyan') {
+            return 'chameleon_left_cyan_hori';
+        } else if (color === 'green') {
+            return 'chameleon_left_green_hori';
+        } else if (color === 'red') {
+            return 'chameleon_left_red_hori';
+        } else if (color === 'yellow') {
+            return 'chameleon_left_yellow_hori';
+        }
+    }
+    colorChameleonVert(color) {
+        // Return frame_index for chameleon_vert of color
+        if (color === 'cyan') {
+            return 'chameleon_left_cyan_vert';
+        } else if (color === 'green') {
+            return 'chameleon_left_green_vert';
+        } else if (color === 'red') {
+            return 'chameleon_left_red_vert';
+        } else if (color === 'yellow') {
+            return 'chameleon_left_yellow_vert';
         }
     }
     colorChameleonLeft(color) {
         // Return frame_index for chameleon_left of color
-        if (color === 'cyan') {
-            return 'chameleon_left_cyan';
-        } else if (color === 'green') {
-            return 'chameleon_left_green';
-        } else if (color === 'red') {
-            return 'chameleon_left_red';
-        } else if (color === 'yellow') {
-            return 'chameleon_left_yellow';
+        if (this.player.spriteCurrent === this.player.spriteVert) {
+            if (color === 'cyan') {
+                return 'chameleon_left_cyan_vert';
+            } else if (color === 'green') {
+                return 'chameleon_left_green_vert';
+            } else if (color === 'red') {
+                return 'chameleon_left_red_vert';
+            } else if (color === 'yellow') {
+                return 'chameleon_left_yellow_vert';
+            }
+        } else if (this.player.spriteCurrent === this.player.spriteHori) {
+            if (color === 'cyan') {
+                return 'chameleon_left_cyan_hori';
+            } else if (color === 'green') {
+                return 'chameleon_left_green_hori';
+            } else if (color === 'red') {
+                return 'chameleon_left_red_hori';
+            } else if (color === 'yellow') {
+                return 'chameleon_left_yellow_hori';
+            }
         }
     }
     colorChameleonRight(color) {
         // Return frame_index for chameleon_right of color
-        if (color === 'cyan') {
-            return 'chameleon_right_cyan';
-        } else if (color === 'green') {
-            return 'chameleon_right_green';
-        } else if (color === 'red') {
-            return 'chameleon_right_red';
-        } else if (color === 'yellow') {
-            return 'chameleon_right_yellow';
+        if (this.player.spriteCurrent === this.player.spriteVert) {
+            if (color === 'cyan') {
+                return 'chameleon_right_cyan_vert';
+            } else if (color === 'green') {
+                return 'chameleon_right_green_vert';
+            } else if (color === 'red') {
+                return 'chameleon_right_red_vert';
+            } else if (color === 'yellow') {
+                return 'chameleon_right_yellow_vert';
+            }
+        } else if (this.player.spriteCurrent === this.player.spriteHori) {
+            if (color === 'cyan') {
+                return 'chameleon_right_cyan_hori';
+            } else if (color === 'green') {
+                return 'chameleon_right_green_hori';
+            } else if (color === 'red') {
+                return 'chameleon_right_red_hori';
+            } else if (color === 'yellow') {
+                return 'chameleon_right_yellow_hori';
+            }
         }
     }
     colorAnimationWalk(color) {
@@ -422,22 +559,22 @@ class Runner extends Menu {
         // Change roomIndex based on player color, kill old room and then load new room
         var currentRoom = this.roomIndex;
         var newRoom = this.roomIndex;
-        if (this.player.sprite.body.x < 0) {
+        if (this.player.spriteCurrent.body.x < 0) {
             newRoom--;
-            this.player.sprite.x += this.game.world.width;
-        } else if (this.player.sprite.body.x > this.game.world.width) {
+            this.player.spriteCurrent.x += this.game.world.width;
+        } else if (this.player.spriteCurrent.body.x > this.game.world.width) {
             newRoom++;
-            this.player.sprite.x -= this.game.world.width;
-        } else if (this.player.sprite.body.y < 0) {
+            this.player.spriteCurrent.x -= this.game.world.width;
+        } else if (this.player.spriteCurrent.body.y < 0) {
             newRoom -= this.mapWidth;
-            this.player.sprite.y += this.game.world.height;
-        } else if (this.player.sprite.body.y > this.game.world.height) {
+            this.player.spriteCurrent.y += this.game.world.height;
+        } else if (this.player.spriteCurrent.body.y > this.game.world.height) {
             newRoom += this.mapWidth;
-            this.player.sprite.y -= this.game.world.height;
+            this.player.spriteCurrent.y -= this.game.world.height;
         }
         if (this.player.color !== this.mapData[newRoom].color) {
-            this.player.sprite.x = this.game.world.width / 2;
-            this.player.sprite.y = this.game.world.height / 2;
+            this.player.spriteCurrent.x = this.game.world.width / 2;
+            this.player.spriteCurrent.y = this.game.world.height / 2;
             this.game.camera.shake(0.03, 250);
             while (this.roomIndex === currentRoom || this.roomIndex === newRoom || this.roomIndex === this.objective.index) {
                 this.roomIndex = this.randomIndex();
