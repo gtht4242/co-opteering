@@ -6,6 +6,7 @@ class Game extends Phaser.Game {
         this.state.add('Menu', Menu);
         this.state.add('Help', Help);
         this.state.add('Help2', Help2);
+        this.state.add('Credits', Credits);
         this.state.add('LevelSelect', LevelSelect);
         this.state.add('DisplaySeed', DisplaySeed)
         this.state.add('Runner', Runner);
