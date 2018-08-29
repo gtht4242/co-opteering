@@ -1,7 +1,7 @@
 class Help2 extends Menu {
     create() {
         // Create help text and hint square images
-        var rulesText = this.game.add.text(50, 50, ' '.repeat(14) + 'Collect all the objectives to win.\nThe coordinates of the next objective are displayed in the bottom-right corner.\nYou must be the same colour as the room you are entering. Otherwise, you will be warped to a random room.\n',
+        var rulesText = this.game.add.text(50, 0, ' '.repeat(14) + "Players may not look at each other's screens.\n" + ' '.repeat(14) + 'Collect all the objectives to win.\nThe coordinates of the next objective are displayed in the bottom-right corner.\nYou must be the same colour as the room you are entering. Otherwise, you will be warped to a random room.\n',
         {fontSize: 40, wordWrap: true, wordWrapWidth: this.game.world.width - 100});
         var hintSquaresText = this.game.add.text(50, 310, 'The hint squares indicate the surrounding rooms.\ne.g.',
         {fontSize: 40, wordWrap: true, wordWrapWidth: this.game.world.width - 100});
