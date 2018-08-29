@@ -14,6 +14,7 @@ class Load extends Phaser.State {
         this.game.load.image('button_mapper', 'mapper_button.png');
         this.game.load.image('button_confirm', 'confirm_button.png');
         this.game.load.image('button_help', 'button_help.png');
+        this.game.load.image('button_credits', 'button_credits.png');
         this.game.load.image('button_controls', 'button_controls.png');
         this.game.load.image('button_rules', 'button_rules.png');
         this.game.load.image('button_level_1', 'button_level_1.png');

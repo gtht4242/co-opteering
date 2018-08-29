@@ -13,6 +13,8 @@ class Menu extends Phaser.State {
         this.configureButton(mapperButton);
         var helpButton = this.game.add.button(70, this.game.world.height - 70, 'button_help', this.startHelp);
         this.configureButton(helpButton);
+        var creditsButton = this.game.add.button(200, this.game.world.height - 70, 'button_credits', this.startCredits);
+        this.configureButton(creditsButton);
         // Create hotkey shortcuts
         var keyR = this.game.input.keyboard.addKey(Phaser.Keyboard.R);
         keyR.onDown.add(this.startLevelSelect, this);
@@ -35,6 +37,10 @@ class Menu extends Phaser.State {
     startHelp2() {
         // Start help2 state
         this.game.state.start('Help2');
+    }
+    startCredits() {
+        // Start credits state
+        this.game.state.start('Credits');
     }
     startLevelSelect() {
         // Start level select state
