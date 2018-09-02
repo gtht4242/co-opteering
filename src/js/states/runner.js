@@ -79,8 +79,6 @@ class Runner extends Menu {
         while (this.roomIndex === this.objective.index) {
             this.objective.index = this.randomIndex();
         }
-        this.objective.index = this.roomIndex;
-        this.objective.sprite.visible = true;
         this.game.physics.arcade.enable(this.objective.sprite);
         this.objective.sprite.anchor.setTo(0.5, 0.5);
         this.objective.sprite.visible = false;
