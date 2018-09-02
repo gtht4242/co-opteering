@@ -1,7 +1,7 @@
 class Credits extends Menu {
     create() {
         // Create credits text
-        var creditsText = this.game.add.text(200, 50, 'Game by Gabriel Toh\nArt by A.T.',
+        var creditsText = this.game.add.text(200, 50, 'Game by Gabriel Toh\nArt by Antonia Tsang',
         {fontSize: 40, wordWrap: true, wordWrapWidth: this.game.world.width - 100});
         // Create buttons
         var backButton = this.game.add.button(85, 50, 'button_back', this.startMenu, this);

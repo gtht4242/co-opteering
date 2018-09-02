@@ -31,7 +31,7 @@ class Load extends Phaser.State {
         this.game.load.image('HUD_indicator_green', 'HUD_indicator_green.png');
         this.game.load.image('HUD_indicator_red', 'HUD_indicator_red.png');
         this.game.load.image('HUD_indicator_yellow', 'HUD_indicator_yellow.png');
-        this.game.load.image('particle_black_square', 'small_square_black.png');
+        this.game.load.image('objective_fly', 'fly.png');
         this.game.load.image('wall_cyan_horizontal', 'NEW_rect_cyan_hori.png');
         this.game.load.image('wall_cyan_vertical', 'NEW_rect_cyan_vert.png');
         this.game.load.image('wall_cyan_square', 'square_cyan.png');
