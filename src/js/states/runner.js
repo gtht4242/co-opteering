@@ -73,12 +73,14 @@ class Runner extends Menu {
         this.player.spriteHori.kill();
         // Create objective sprite and randomise location
         this.objective = {
-            sprite: this.game.add.sprite(this.game.world.width / 2, this.game.world.height / 2, 'particle_black_square'),
+            sprite: this.game.add.sprite(this.game.world.width / 2 - 35, this.game.world.height / 2 - 25, 'objective_fly'),
             index: this.randomIndex()
         }
         while (this.roomIndex === this.objective.index) {
             this.objective.index = this.randomIndex();
         }
+        this.objective.index = this.roomIndex;
+        this.objective.sprite.visible = true;
         this.game.physics.arcade.enable(this.objective.sprite);
         this.objective.sprite.anchor.setTo(0.5, 0.5);
         this.objective.sprite.visible = false;
